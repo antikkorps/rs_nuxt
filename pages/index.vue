@@ -1,3 +1,5 @@
 <template>
-  <h1>This is the main page</h1>
+  <div class="flex flex-col justify-center w-full my-4">
+    <Post />
+  </div>
 </template>
