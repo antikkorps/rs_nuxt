@@ -2,7 +2,7 @@
 const links = [
   { name: "Accueil", href: "/", icon: "material-symbols:other-houses" },
   { name: "A Propos", href: "/about", icon: "mdi:account-tie-voice-outline" },
-  { name: "Contact", href: "/Messages", icon: "ic:baseline-message" },
+  { name: "Messages", href: "/Messages", icon: "ic:baseline-message" },
   { name: "Dashboard", href: "/dashboard", icon: "ic:round-dashboard-customize" },
 ]
 </script>
