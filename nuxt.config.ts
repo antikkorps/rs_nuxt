@@ -2,6 +2,9 @@
 export default defineNuxtConfig({
   devtools: { enabled: true },
   modules: ["@nuxt/ui"],
+  colorMode: {
+    preference: "dark",
+  },
   tailwindcss: {
     cssPath: "~/assets/css/tailwind.css",
     configPath: "~/tailwind.config.js",
