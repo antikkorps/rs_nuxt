@@ -8,7 +8,7 @@ const links = [
 </script>
 <template>
   <aside
-    class="hidden sm:flex flex-col w-1/6 dark:bg-neutral-800 bg-neutral-100 h-screen justify-between px-4 absolute"
+    class="hidden sm:flex flex-col w-1/6 dark:bg-neutral-800 bg-neutral-100 h-screen justify-between px-4 relative"
   >
     <div class="flex flex-col pt-4 justify-center gap-y-6">
       <div class="text-center">Le logo</div>
