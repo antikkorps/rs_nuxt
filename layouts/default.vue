@@ -1,6 +1,8 @@
 <template>
-  <div>
-    <p>Some default layout content shared across all pages</p>
-    <slot />
+  <div class="flex flex-row">
+    <Navbar />
+    <div class="max-w-screen-md w-full mx-auto flex justify-center">
+      <slot />
+    </div>
   </div>
 </template>
