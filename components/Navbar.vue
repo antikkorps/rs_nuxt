@@ -1,12 +1,39 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+const links = [
+  { name: "Accueil", href: "/", icon: "material-symbols:other-houses" },
+  { name: "A Propos", href: "/about", icon: "mdi:account-tie-voice-outline" },
+  { name: "Contact", href: "/Messages", icon: "ic:baseline-message" },
+  { name: "Dashboard", href: "/dashboard", icon: "ic:round-dashboard-customize" },
+]
+</script>
 <template>
   <aside
-    class="hidden sm:flex flex-col w-1/6 bg-neutral-800 h-screen justify-evenly px-4"
+    class="hidden sm:flex flex-col w-1/6 dark:bg-neutral-800 bg-neutral-100 h-screen justify-between px-4 absolute"
   >
-    <div><UiColorMode /></div>
+    <div class="flex flex-col pt-4 justify-center gap-y-6">
+      <div class="text-center">Le logo</div>
+      <div><UiColorMode /></div>
 
-    <div>Les liens</div>
-    <div>Connexion du user</div>
+      <ul class="flex flex-col justify-around">
+        <li v-for="link in links" :key="link.name" class="flex items-center text-lg my-4">
+          <nuxt-link :to="link.href">
+            <UiIcon :name="link.icon" />
+            {{ link.name }}
+          </nuxt-link>
+        </li>
+      </ul>
+    </div>
+
+    <div class="flex flex-col justify-center items-center my-10">
+      <div class="flex flex-col justify-center items-center">
+        <div class="flex flex-row justify-center items-center gap-x-3">
+          <UiSignupBtn />
+          <UiLoginBtn />
+        </div>
+        <UiLogoutBtn />
+      </div>
+      <UiAvatar :size="`xl`" />
+    </div>
   </aside>
 </template>
 <style scoped></style>
