@@ -3,11 +3,8 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   modules: ["@nuxt/ui"],
   tailwindcss: {
-    cssPath: ["~/assets/css/tailwind.css", { injectPosition: "first" }],
+    cssPath: "~/assets/css/tailwind.css",
     configPath: "~/tailwind.config.js",
-    exposeConfig: {
-      level: 2,
-    },
     config: {},
     viewer: true,
   },
