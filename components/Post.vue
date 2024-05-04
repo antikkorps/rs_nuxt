@@ -1,7 +1,7 @@
 <template>
   <!-- Card-->
   <article
-    class="mb-4 break-inside p-6 rounded-xl bg-white dark:bg-neutral-800 flex flex-col bg-clip-border"
+    class="my-4 break-inside p-6 rounded-xl bg-white dark:bg-neutral-800 flex flex-col bg-clip-border"
   >
     <div class="flex pb-6 items-center justify-between">
       <div class="flex">
@@ -15,14 +15,14 @@
           <div class="flex items-center">
             <a class="inline-block text-lg font-bold mr-2" href="#">Esther Howard</a>
             <span>
-              <svg class="fill-blue-500 dark:fill-slate-50 w-5 h-5" viewBox="0 0 24 24">
+              <svg class="fill-blue-500 dark:fill-neutral-50 w-5 h-5" viewBox="0 0 24 24">
                 <path
                   d="M10,17L5,12L6.41,10.58L10,14.17L17.59,6.58L19,8M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z"
                 ></path>
               </svg>
             </span>
           </div>
-          <div class="text-slate-500 dark:text-slate-300">January 22, 2021</div>
+          <div class="text-neutral-500 dark:text-neutral-300">January 22, 2021</div>
         </div>
       </div>
     </div>
@@ -31,7 +31,7 @@
       <a class="flex" href="#">
         <img
           class="max-w-full rounded-lg"
-          src="https://images.pexels.com/photos/3682153/pexels-photo-3682153.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260"
+          src="https://images.unsplash.com/photo-1568515045052-f9a854d70bfd?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
         />
       </a>
     </div>
@@ -52,7 +52,7 @@
 
     <div class="relative">
       <input
-        class="pt-2 pb-2 pl-3 w-full h-11 bg-slate-100 dark:bg-slate-600 rounded-lg placeholder:text-slate-600 dark:placeholder:text-slate-300 font-medium pr-20"
+        class="pt-2 pb-2 pl-3 w-full h-11 bg-neutral-100 dark:bg-neutral-600 rounded-lg placeholder:text-neutral-600 dark:placeholder:text-neutral-300 font-medium pr-20"
         type="text"
         placeholder="Write a comment"
       />
@@ -64,7 +64,7 @@
           ></path>
         </svg>
         <svg
-          class="fill-blue-500 dark:fill-slate-50"
+          class="fill-blue-500 dark:fill-neutral-50"
           style="width: 24px; height: 24px"
           viewBox="0 0 24 24"
         >
@@ -85,7 +85,7 @@
         <div class="media-body">
           <div>
             <a class="inline-block text-base font-bold mr-2" href="#">Ronald Richards</a>
-            <span class="text-slate-500 dark:text-slate-300">25 minutes ago</span>
+            <span class="text-neutral-500 dark:text-neutral-300">25 minutes ago</span>
           </div>
           <p>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit sed do eiusmod 😀😀😀
@@ -97,7 +97,7 @@
               <span class="text-base font-bold">2</span>
             </a>
             <button
-              class="py-2 px-4 font-medium hover:bg-slate-50 dark:hover:bg-slate-700 rounded-lg"
+              class="py-2 px-4 font-medium hover:bg-neutral-50 dark:hover:bg-neutral-700 rounded-lg"
             >
               Répondre
             </button>
@@ -116,7 +116,7 @@
         <div class="media-body">
           <div>
             <a class="inline-block text-base font-bold mr-2" href="#">Natalia Jímenez</a>
-            <span class="text-slate-500 dark:text-slate-300">3 minutes ago</span>
+            <span class="text-neutral-500 dark:text-neutral-300">3 minutes ago</span>
           </div>
           <p>Dolor sit ameteiusmod consectetur adipiscing elit.</p>
           <div class="mt-2 flex items-center">
@@ -126,7 +126,7 @@
               <span class="text-base font-bold">2</span>
             </a>
             <button
-              class="py-2 px-4 font-medium hover:bg-slate-50 dark:hover:bg-slate-700 rounded-lg"
+              class="py-2 px-4 font-medium hover:bg-neutral-50 dark:hover:bg-neutral-700 rounded-lg"
             >
               Répondre
             </button>
@@ -138,7 +138,7 @@
       <div class="w-full">
         <a
           href="#"
-          class="py-3 px-4 w-full block bg-slate-100 dark:bg-slate-700 text-center rounded-lg font-medium hover:bg-slate-200 dark:hover:bg-slate-600 transition ease-in-out delay-75"
+          class="py-3 px-4 w-full block bg-neutral-100 dark:bg-neutral-700 text-center rounded-lg font-medium hover:bg-neutral-200 dark:hover:bg-neutral-600 transition ease-in-out delay-75"
           >Plus de commentaires</a
         >
       </div>
