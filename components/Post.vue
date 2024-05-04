@@ -26,7 +26,7 @@
         </div>
       </div>
     </div>
-    <h2 class="text-3xl font-extrabold">Web Design templates Selection</h2>
+    <h2 class="text-3xl font-extrabold">Ma nouvelle session !!!</h2>
     <div class="py-4">
       <a class="flex" href="#">
         <img
