@@ -11,13 +11,13 @@ const toggleBookmark = () => {
       <Icon
         v-if="liked"
         name="ic:baseline-bookmark"
-        class="w-8 h-8 dark:text-white text-gray-800"
+        class="w-6 h-6 dark:text-white text-gray-800"
         @click="toggleBookmark"
       />
       <Icon
         v-else
         name="ic:baseline-bookmark-border"
-        class="w-8 h-8 dark:text-white text-gray-800"
+        class="w-6 h-6 dark:text-white text-gray-800"
         @click="toggleBookmark"
       />
     </Transition>
