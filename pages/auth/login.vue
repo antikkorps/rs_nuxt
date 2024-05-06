@@ -74,7 +74,8 @@
 
             <div>
               <button
-                type="submit"
+                @click="onSubmit"
+                type="button"
                 class="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
               >
                 Sign in
@@ -149,3 +150,12 @@
       </template>
   </UiCard>
 </template>
+
+<script setup lang="ts">
+function onSubmit() {
+    const authStore = useAuthStore();
+    const { username, password } = { username: 'test', password: 'test'};
+
+    return authStore.login(username, password)
+}
+</script>
