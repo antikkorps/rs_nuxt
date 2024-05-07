@@ -1,6 +1,5 @@
 <template>
-  <div>
-    <p>Some auth layout content shared across all auth pages</p>
+  <div class="h-screen w-full flex justify-center items-center">
     <slot />
   </div>
 </template>
