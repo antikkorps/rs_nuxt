@@ -1,6 +1,8 @@
 <script setup lang="ts">
+const isOpen = ref(false)
+
 const toggleMoreMenu = () => {
-  console.log("More button clicked still have to implement the more functionality")
+  isOpen.value = !isOpen.value
 }
 </script>
 <template>
@@ -11,5 +13,26 @@ const toggleMoreMenu = () => {
     >
       <Icon name="ic:baseline-more-vert" class="w-6 h-6 dark:text-white text-gray-800" />
     </button>
+    <!-- SlideoverMenu -->
+    <USlideover v-model="isOpen">
+      <UCard
+        class="flex flex-col flex-1"
+        :ui="{
+          body: { base: 'flex-1' },
+          ring: '',
+          divide: 'divide-y divide-gray-100 dark:divide-gray-800',
+        }"
+      >
+        <template #header>
+          <Placeholder class="h-8" />
+        </template>
+
+        <Placeholder class="h-full" />
+
+        <template #footer>
+          <Placeholder class="h-8" />
+        </template>
+      </UCard>
+    </USlideover>
   </div>
 </template>
