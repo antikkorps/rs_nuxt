@@ -25,8 +25,8 @@
           <div class="text-neutral-500 dark:text-neutral-300">January 22, 2021</div>
         </div>
       </div>
+      <UiMoreBtn />
     </div>
-    <h2 class="text-3xl font-extrabold">Ma nouvelle session !!!</h2>
     <div class="py-4">
       <a class="flex" href="#">
         <img
@@ -35,19 +35,24 @@
         />
       </a>
     </div>
+    <h2 class="text-3xl font-extrabold mb-2">Ma nouvelle session !!!</h2>
+
     <p>
       Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
       incididunt ut labore et dolore magna aliqua.
     </p>
     <div class="flex justify-between">
-      <div class="py-4">
-        <a class="inline-flex items-center" href="#">
+      <div class="py-2">
+        <div class="inline-flex items-center" href="#">
           <UiLikeBtn />
 
           <span class="text-lg font-bold">68</span>
-        </a>
+        </div>
       </div>
-      <UiBookmarkBtn />
+      <div class="flex items-center">
+        <UiShareBtn />
+        <UiBookmarkBtn />
+      </div>
     </div>
 
     <div class="relative">
@@ -90,12 +95,12 @@
           <p>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit sed do eiusmod 😀😀😀
           </p>
-          <div class="mt-2 flex items-center">
-            <a class="inline-flex items-center py-2 mr-3" href="#">
+          <div class="flex items-center">
+            <div class="inline-flex items-center py-2 mr-3">
               <UiLikeBtn />
 
               <span class="text-base font-bold">2</span>
-            </a>
+            </div>
             <button
               class="py-2 px-4 font-medium hover:bg-neutral-50 dark:hover:bg-neutral-700 rounded-lg"
             >
@@ -119,12 +124,12 @@
             <span class="text-neutral-500 dark:text-neutral-300">3 minutes ago</span>
           </div>
           <p>Dolor sit ameteiusmod consectetur adipiscing elit.</p>
-          <div class="mt-2 flex items-center">
-            <a class="inline-flex items-center py-2 mr-3" href="#">
+          <div class="flex items-center">
+            <div class="inline-flex items-center py-2 mr-3">
               <UiLikeBtn />
 
               <span class="text-base font-bold">2</span>
-            </a>
+            </div>
             <button
               class="py-2 px-4 font-medium hover:bg-neutral-50 dark:hover:bg-neutral-700 rounded-lg"
             >
