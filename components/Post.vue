@@ -25,6 +25,7 @@
           <div class="text-neutral-500 dark:text-neutral-300">January 22, 2021</div>
         </div>
       </div>
+      <UiMoreBtn />
     </div>
     <div class="py-4">
       <a class="flex" href="#">
@@ -49,6 +50,7 @@
         </div>
       </div>
       <div class="flex items-center">
+        <UiShareBtn />
         <UiBookmarkBtn />
       </div>
     </div>
