@@ -7,5 +7,5 @@ const props = defineProps({
 })
 </script>
 <template>
-  <Icon :name="props.name" class="w-6 h-6 mr-3" color="white" />
+  <Icon :name="props.name" class="w-6 h-6 mr-3 dark:text-white text-neutral-700" />
 </template>
