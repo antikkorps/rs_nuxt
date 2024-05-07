@@ -4,9 +4,11 @@ const isOpen = ref(false)
 const toggleMoreMenu = () => {
   if (isOpen.value) {
     isOpen.value = false
+    document.body.classList.remove("overflow-hidden")
     return
   } else {
     isOpen.value = true
+    document.body.classList.add("overflow-hidden")
   }
 }
 </script>
@@ -25,12 +27,17 @@ const toggleMoreMenu = () => {
     ></div>
     <transition name="slide">
       <div
+        v-if="isOpen"
         v-show="isOpen"
-        class="fixed right-0 sm:right-16 md:right-36 bottom-0 mt-2 w-full sm:w-4/6 bg-white dark:bg-neutral-700 rounded-lg shadow-lg h- z-50"
+        class="fixed left-0 right-0 bottom-0 mt-2 w-full bg-white dark:bg-neutral-700 rounded-lg shadow-lg"
       >
-        <div class="flex flex-col justify-center p-2">
+        <div class="flex flex-col justify-center p-2 mx-auto w-1/2">
           <div class="w-full flex flex-row justify-end items-center mt-2">
-            <UiIcon name="ion:md-close-circle-outline" @click="toggleMoreMenu" />
+            <UiIcon
+              name="ion:md-close-circle-outline"
+              @click="toggleMoreMenu"
+              size="w-8 h-8"
+            />
           </div>
           <button
             class="flex items-center space-x-2 p-2 hover:bg-gray-100 dark:hover:bg-neutral-600 rounded-lg"
