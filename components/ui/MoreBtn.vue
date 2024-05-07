@@ -1,21 +1,14 @@
 <script setup lang="ts">
 const isOpen = ref(false)
 
-watch(isOpen, (newValue, oldValue) => {
-  if (newValue) {
-    document.body.classList.add("overflow-hidden")
-  } else {
-    document.body.classList.remove("overflow-hidden")
-  }
-})
-
 const toggleMoreMenu = () => {
-  isOpen.value = !isOpen.value
+  if (isOpen.value) {
+    isOpen.value = false
+    return
+  } else {
+    isOpen.value = true
+  }
 }
-
-onUnmounted(() => {
-  document.body.classList.remove("overflow-hidden")
-})
 </script>
 <template>
   <div class="flex items-center space-x-2">
@@ -33,7 +26,7 @@ onUnmounted(() => {
     <transition name="slide">
       <div
         v-show="isOpen"
-        class="fixed right-0 sm:right-36 bottom-0 mt-2 w-full sm:w-4/6 bg-white dark:bg-neutral-700 rounded-lg shadow-lg h- z-50"
+        class="fixed right-0 sm:right-16 md:right-36 bottom-0 mt-2 w-full sm:w-4/6 bg-white dark:bg-neutral-700 rounded-lg shadow-lg h- z-50"
       >
         <div class="flex flex-col justify-center p-2">
           <div class="w-full flex flex-row justify-end items-center mt-2">

@@ -8,7 +8,7 @@ const links = [
 </script>
 <template>
   <aside
-    class="hidden sm:flex flex-col w-1/6 dark:bg-neutral-800 bg-neutral-100 h-screen justify-between px-4 fixed top-0 left-0 z-50"
+    class="hidden md:flex flex-col w-1/6 dark:bg-neutral-800 bg-neutral-100 h-screen justify-between px-4 fixed top-0 left-0 z-50"
   >
     <div class="flex flex-col pt-4 justify-center gap-y-3">
       <div class="text-center text-2xl font-extrabold">Ink4U</div>
