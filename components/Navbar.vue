@@ -17,7 +17,7 @@ const links = [
       <ul class="flex flex-col justify-around">
         <li v-for="link in links" :key="link.name" class="flex items-center text-lg my-4">
           <nuxt-link :to="link.href">
-            <UiIcon :name="link.icon" class="dark:text-white text-neutral-700" />
+            <UiIcon :name="link.icon" />
             {{ link.name }}
           </nuxt-link>
         </li>
