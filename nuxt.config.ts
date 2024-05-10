@@ -11,4 +11,5 @@ export default defineNuxtConfig({
     config: {},
     viewer: true,
   },
-});
+  extends: ["nuxt-emoji"],
+})
