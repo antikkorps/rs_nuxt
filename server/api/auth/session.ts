@@ -1,5 +1,6 @@
 export default defineEventHandler(async (event) => {
   const { access_token: accessToken } = await readBody(event)
+  console.log("accesstoken dans /session", accessToken)
   const response = await fetch("http://inkagram.mimach.cloud/api/v1/users/me", {
     method: "GET",
     headers: {
@@ -7,7 +8,6 @@ export default defineEventHandler(async (event) => {
       Authorization: `Bearer ${accessToken}`,
     },
   })
-  console.log("accesstoken dans /session", accessToken)
 
   const session = await response.json()
   return session
