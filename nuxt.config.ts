@@ -1,7 +1,7 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: { enabled: true },
-  modules: ["@nuxt/ui", "@pinia/nuxt"],
+  modules: ["@nuxt/ui", "@pinia/nuxt", "@sidebase/nuxt-auth"],
   colorMode: {
     preference: "dark",
   },
@@ -12,4 +12,17 @@ export default defineNuxtConfig({
     viewer: true,
   },
   extends: ["nuxt-emoji"],
+  auth: {
+    baseURL: "/api/auth",
+    provider: {
+      type: "local",
+    },
+    endpoints: {
+      signIn: { path: "/login", method: "post", credentials: true },
+      signOut: { path: "/logout", method: "post", credentials: true },
+      signUp: { path: "/register", method: "post", credentials: true },
+      getSession: { path: "/session", method: "get", credentials: true },
+    },
+    token: { signInResponseTokenPointer: "/token/accessToken" },
+  },
 })

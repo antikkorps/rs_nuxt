@@ -1,3 +1,24 @@
+<script setup lang="ts">
+const email = ref("")
+const password = ref("")
+
+const { signIn } = useAuth()
+
+const onSubmit = async () => {
+  try {
+    await signIn({ email: email.value, password: password.value })
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+// function onSubmit() {
+//   const authStore = useAuthStore()
+//   const { username, password } = { username: "test", password: "test" }
+
+//   return authStore.login(username, password)
+// }
+</script>
 <template>
   <UiCard>
     <template #header>
@@ -15,6 +36,7 @@
             >
             <div class="mt-2">
               <input
+                v-model="email"
                 id="email"
                 name="email"
                 type="email"
@@ -30,6 +52,7 @@
             >
             <div class="mt-2">
               <input
+                v-model="password"
                 id="password"
                 name="password"
                 type="password"
@@ -130,12 +153,3 @@
     </template>
   </UiCard>
 </template>
-
-<script setup lang="ts">
-function onSubmit() {
-  const authStore = useAuthStore()
-  const { username, password } = { username: "test", password: "test" }
-
-  return authStore.login(username, password)
-}
-</script>
