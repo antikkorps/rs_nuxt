@@ -1,14 +1,35 @@
 <script setup lang="ts">
+import { z } from "zod"
+import { userServices } from "~/services/index"
+
 const email = ref("")
 const password = ref("")
 
 const { signIn } = useAuth()
+const router = useRouter()
+const schema = z.object({
+  email: z.string().email("Invalid email"),
+  // password: z.string().min(8, "Must be at least 8 characters"),
+})
+
+type Schema = z.output<typeof schema>
+
+const state = reactive({
+  email: "",
+  password: "",
+})
 
 const onSubmit = async () => {
   try {
-    await signIn({ email: email.value, password: password.value })
+    await signIn("credentials", {
+      redirect: true,
+      email: state.email,
+      password: state.password,
+      callbackUrl: "/dashboard",
+    })
+    console.log("success")
   } catch (error) {
-    console.error(error)
+    console.log("error", error)
   }
 }
 
@@ -36,7 +57,7 @@ const onSubmit = async () => {
             >
             <div class="mt-2">
               <input
-                v-model="email"
+                v-model="state.email"
                 id="email"
                 name="email"
                 type="email"
@@ -52,7 +73,7 @@ const onSubmit = async () => {
             >
             <div class="mt-2">
               <input
-                v-model="password"
+                v-model="state.password"
                 id="password"
                 name="password"
                 type="password"

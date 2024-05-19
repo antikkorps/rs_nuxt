@@ -24,8 +24,8 @@ model User {
   id            Int                @id @default(autoincrement())
   email         String             @unique
   pseudo        String             @unique
-  firstName     String?
-  lastName      String?
+  firstname     String?
+  lastname      String?
   password      String
   resetToken    String?
   webpage       String?
@@ -43,7 +43,7 @@ model User {
   i_follow    Follow[] @relation("followerId")
   they_follow Follow[] @relation("followedId")
 
-  roles RoleUser[]
+  roles RoleUser[] 
 
   posts             Post[]           @relation("posts")
   // savedPost         SavedPost[]      @relation("userSavedPosts")
@@ -57,7 +57,7 @@ model User {
 
   confirmedAt DateTime?
   
-  @@index(fields: [firstName, lastName, email], name: "main_user_index")
+  @@index(fields: [firstname, lastname, email], name: "main_user_index")
   @@map("users")
 }
 
