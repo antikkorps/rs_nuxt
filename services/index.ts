@@ -1,3 +1,5 @@
-import * as postService from "./postService"
+import * as postServices from "./postServices"
+import * as userServices from "./userServices"
 
-export { postService }
+export { postServices, userServices }
+
