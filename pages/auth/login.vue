@@ -1,3 +1,43 @@
+<script setup lang="ts">
+import { z } from "zod"
+
+const email = ref("")
+const password = ref("")
+
+const { signIn, session, status, cookies, getProviders } = useAuth()
+const router = useRouter()
+const schema = z.object({
+  email: z.string().email("Invalid email"),
+  // password: z.string().min(8, "Must be at least 8 characters"),
+})
+
+type Schema = z.output<typeof schema>
+
+const state = reactive({
+  email: "",
+  password: "",
+})
+
+const onSubmit = async () => {
+  try {
+    await signIn("credentials", {
+      redirect: true,
+      email: state.email,
+      password: state.password,
+      callbackUrl: "/",
+    })
+  } catch (error) {
+    console.log("error", error)
+  }
+}
+
+// function onSubmit() {
+//   const authStore = useAuthStore()
+//   const { username, password } = { username: "test", password: "test" }
+
+//   return authStore.login(username, password)
+// }
+</script>
 <template>
   <UiCard>
     <template #header>
@@ -8,13 +48,14 @@
 
     <template #content>
       <div>
-        <form class="space-y-6" action="#" method="POST">
+        <form class="space-y-6" method="POST">
           <div>
             <label for="email" class="block text-sm font-medium leading-6"
               >Email address</label
             >
             <div class="mt-2">
               <input
+                v-model="state.email"
                 id="email"
                 name="email"
                 type="email"
@@ -30,6 +71,7 @@
             >
             <div class="mt-2">
               <input
+                v-model="state.password"
                 id="password"
                 name="password"
                 type="password"
