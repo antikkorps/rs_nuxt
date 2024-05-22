@@ -172,3 +172,12 @@ const onSubmit = async () => {
     </template>
   </UiCard>
 </template>
+
+<script setup lang="ts">
+function onSubmit() {
+  const authStore = useAuthStore()
+  const { username, password } = { username: "test", password: "test" }
+
+  return authStore.login(username, password)
+}
+</script>
