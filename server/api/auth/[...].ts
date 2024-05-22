@@ -3,7 +3,6 @@ import Credentials from "@auth/core/providers/credentials"
 import type { AuthConfig } from "@auth/core/types"
 import { NuxtAuthHandler } from "#auth"
 import bcrypt from "bcrypt"
-import { PrismaAdapter } from "@auth/prisma-adapter"
 
 import { PrismaClient } from "@prisma/client"
 
@@ -18,7 +17,6 @@ const runtimeConfig = useRuntimeConfig()
 // Refer to Auth.js docs for more details
 export const authOptions: AuthConfig = {
   secret: runtimeConfig.authJs.secret,
-  adapter: PrismaAdapter(prisma),
   providers: [
     Credentials({
       name: "credentials",
@@ -79,6 +77,35 @@ export const authOptions: AuthConfig = {
     //   clientSecret: runtimeConfig.github.clientSecret
     // })
   ],
+  callbacks: {
+    jwt: async ({ token, user }) => {
+      if (user) {
+        token.id = user.id
+        token.email = user.email
+        token.firstname = user.firstname
+        token.lastname = user.lastname
+        token.avatar = user.avatar
+        token.role = user.role
+      }
+      return token
+    },
+    session: async ({ session, token }) => {
+      session.user = session.user || {
+        id: "",
+        firstname: "",
+        lastname: "",
+        avatar: "",
+        role: "",
+      }
+      session.user.id = token.id as string
+      session.user.email = token.email as string
+      session.user.firstname = token.firstname as string
+      session.user.lastname = token.lastname as string
+      session.user.avatar = token.avatar as string
+      session.user.role = token.role as string
+      return session
+    },
+  },
 }
 
 export default NuxtAuthHandler(authOptions, runtimeConfig)

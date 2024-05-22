@@ -5,6 +5,37 @@ import bcrypt from "bcrypt"
 const prisma = new PrismaClient()
 
 async function main() {
+  // Create roles
+  let adminRole = await prisma.role.findUnique({
+    where: {
+      slug: "ADMIN",
+    },
+  })
+
+  if (!adminRole) {
+    adminRole = await prisma.role.create({
+      data: {
+        slug: "ADMIN",
+        name: "Admin",
+      },
+    })
+  }
+
+  let userRole = await prisma.role.findUnique({
+    where: {
+      slug: "USER",
+    },
+  })
+
+  if (!userRole) {
+    userRole = await prisma.role.create({
+      data: {
+        slug: "USER",
+        name: "User",
+      },
+    })
+  }
+
   // Create an admin user
   let adminUser = await prisma.user.findUnique({
     where: {
@@ -16,7 +47,15 @@ async function main() {
       data: {
         email: "admin@example.com",
         password: await bcrypt.hash(process.env.ADMIN_PASSWORD, 10),
-        roles: "ADMIN",
+        roles: {
+          create: {
+            role: {
+              connect: {
+                slug: "ADMIN",
+              },
+            },
+          },
+        },
         avatar: faker.image.avatar(),
         pseudo: "admin@example.com",
       },
@@ -34,7 +73,15 @@ async function main() {
       data: {
         email: "user@example.com",
         password: await bcrypt.hash(process.env.ADMIN_PASSWORD, 10),
-        roles: "USER",
+        roles: {
+          create: {
+            role: {
+              connect: {
+                slug: "USER",
+              },
+            },
+          },
+        },
         avatar: faker.image.avatar(),
         pseudo: "user@example.com",
       },

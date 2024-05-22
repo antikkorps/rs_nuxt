@@ -1,11 +1,10 @@
 <script setup lang="ts">
 import { z } from "zod"
-import { userServices } from "~/services/index"
 
 const email = ref("")
 const password = ref("")
 
-const { signIn } = useAuth()
+const { signIn, session, status, cookies, getProviders } = useAuth()
 const router = useRouter()
 const schema = z.object({
   email: z.string().email("Invalid email"),
@@ -25,9 +24,8 @@ const onSubmit = async () => {
       redirect: true,
       email: state.email,
       password: state.password,
-      callbackUrl: "/dashboard",
+      callbackUrl: "/",
     })
-    console.log("success")
   } catch (error) {
     console.log("error", error)
   }
@@ -50,7 +48,7 @@ const onSubmit = async () => {
 
     <template #content>
       <div>
-        <form class="space-y-6" action="#" method="POST">
+        <form class="space-y-6" method="POST">
           <div>
             <label for="email" class="block text-sm font-medium leading-6"
               >Email address</label

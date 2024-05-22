@@ -1,3 +1,5 @@
+import { resolve } from "node:path"
+
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: { enabled: true },
@@ -12,6 +14,9 @@ export default defineNuxtConfig({
     viewer: true,
   },
   extends: ["nuxt-emoji"],
+  alias: {
+    cookie: resolve(__dirname, "node_modules/cookie"),
+  },
   runtimeConfig: {
     authJs: {
       secret: process.env.NUXT_NEXTAUTH_SECRET, // You can generate one with `openssl rand -base64 32`
