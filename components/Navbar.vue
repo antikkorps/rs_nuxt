@@ -1,4 +1,5 @@
 <script setup lang="ts">
+const { session } = useAuth()
 const links = [
   { name: "Accueil", href: "/", icon: "material-symbols:other-houses" },
   { name: "A Propos", href: "/about", icon: "mdi:account-tie-voice-outline" },
@@ -26,13 +27,16 @@ const links = [
 
     <div class="flex flex-col justify-center items-center my-10">
       <div class="flex flex-col justify-center items-center">
-        <div class="flex flex-row justify-center items-center gap-x-3">
+        <div v-if="session">
+          <UiLogoutBtn />
+
+          <UiAvatar class="flex justify-center mx-auto" :size="`xl`" />
+        </div>
+        <div v-else class="flex flex-row justify-center items-center gap-x-3">
           <UiSignupBtn />
           <UiLoginBtn />
         </div>
-        <UiLogoutBtn />
       </div>
-      <UiAvatar :size="`xl`" />
     </div>
   </aside>
 </template>
