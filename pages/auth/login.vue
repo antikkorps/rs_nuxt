@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { z } from "zod"
 
+definePageMeta({ middleware: "guest-only", auth: { authenticatedRedirectTo: "/" } })
+
 const email = ref("")
 const password = ref("")
 
