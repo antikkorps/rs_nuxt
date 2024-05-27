@@ -88,6 +88,24 @@ async function main() {
     })
   }
 
+  //Create 10 posts
+  for (let i = 0; i < 10; i++) {
+    await prisma.post.create({
+      data: {
+        userId: testUser.id,
+        views: faker.number.int({ min: 0, max: 10000 }),
+        repost: faker.number.int({ min: 0, max: 10000 }),
+        title: faker.lorem.sentence(),
+        description: faker.lorem.paragraphs(),
+        mediaPosts: {
+          create: {
+            url: faker.image.urlPicsumPhotos({ width: 480, height: 640 }),
+          },
+        },
+      },
+    })
+  }
+
   //   // Create 10 regular users
   //   for (let i = 0; i < 10; i++) {
   //     await prisma.user.create({

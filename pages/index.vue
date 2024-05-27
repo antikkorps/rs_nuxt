@@ -1,13 +1,10 @@
 <script setup lang="ts">
-import { getAllPosts } from "~/services"
+import { postServices } from "~/services"
 const posts = ref([])
 
 onMounted(async () => {
-  const response = await fetch("https://jsonplaceholder.typicode.com/posts")
-  const data = await response.json()
-  posts.value = data
-
-  console.log("les posts", posts.value)
+  const response = await postServices.getAllPosts()
+  posts.value = response.posts
 })
 </script>
 <template>
