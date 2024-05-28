@@ -111,3 +111,57 @@ export const authOptions: AuthConfig = {
 export default NuxtAuthHandler(authOptions, runtimeConfig)
 // If you don't want to pass the full runtime config,
 //  you can pass something like this: { public: { authJs: { baseUrl: "" } } }
+
+// export default {
+//   providers: [
+//     Credentials({
+//       async authorize(credentials) {
+//         if (typeof credentials.email !== "string") {
+//           throw new Error("Invalid email")
+//         }
+//         if (
+//           typeof credentials.email !== "string" ||
+//           typeof credentials.password !== "string"
+//         ) {
+//           throw new Error("Invalid credentials")
+//         }
+//         const user = await prisma.user.findUnique({
+//           where: {
+//             email: credentials.email,
+//           },
+//         })
+
+//         if (!user) {
+//           throw new Error("No user found")
+//         }
+
+//         const isValid = await bcrypt.compare(credentials.password, user.password)
+
+//         if (!isValid) {
+//           throw new Error("Invalid password")
+//         }
+
+//         const roles = await prisma.roleUser.findMany({
+//           where: {
+//             userId: user.id,
+//           },
+//           select: {
+//             role: true,
+//           },
+//         })
+
+//         const roleNames = roles.map((roleUser) => roleUser.role.name)
+
+//         return {
+//           id: user.id,
+//           email: user.email,
+//           firstName: user.firstname,
+//           lastName: user.lastname,
+//           avatar: user.avatar,
+//           role: roleNames,
+//         }
+//       },
+
+//     })
+//   ]
+// }

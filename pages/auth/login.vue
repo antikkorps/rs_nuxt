@@ -1,5 +1,7 @@
 <script setup lang="ts">
+
 import { z } from "zod"
+import { loginSchema } from "~/schemas/login-schema";
 
 definePageMeta({ middleware: "guest-only", auth: { authenticatedRedirectTo: "/" } })
 
@@ -8,19 +10,28 @@ const password = ref("")
 
 const { signIn, session, status, cookies, getProviders } = useAuth()
 const router = useRouter()
-const schema = z.object({
-  email: z.string().email("Invalid email"),
-  // password: z.string().min(8, "Must be at least 8 characters"),
-})
 
-type Schema = z.output<typeof schema>
+
+type Schema = z.output<typeof loginSchema>
 
 const state = reactive({
   email: "",
   password: "",
 })
+const errors = reactive({ email: "", password: "" })
 
 const onSubmit = async () => {
+  
+  const validateData = loginSchema.safeParse(state);
+  if (!validateData.success) {    
+    validateData.error.errors.forEach((error: z.ZodIssue) => {
+      if (typeof error.path[0] === 'string') {
+        errors[error.path[0] as 'email' | 'password'] = error.message as string;
+      }
+    });
+    return
+  }
+
   try {
     await signIn("credentials", {
       redirect: true,
@@ -55,7 +66,7 @@ const onSubmit = async () => {
             <label for="email" class="block text-sm font-medium leading-6"
               >Email address</label
             >
-            <div class="mt-2">
+            <div class="mt-2 space-y-1">
               <input
                 v-model="state.email"
                 id="email"
@@ -64,6 +75,7 @@ const onSubmit = async () => {
                 autocomplete="email"
                 class="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
               />
+              <UiErrorMessage v-if="errors.email" :message="errors.email" />
             </div>
           </div>
 
@@ -97,7 +109,9 @@ const onSubmit = async () => {
             </div>
 
             <div class="text-sm leading-6">
-              <a href="#" class="font-semibold text-indigo-600 hover:text-indigo-500"
+              <a
+                href="#"
+                class="font-semibold text-indigo-600 hover:text-indigo-500"
                 >Forgot password?</a
               >
             </div>
@@ -119,8 +133,12 @@ const onSubmit = async () => {
             <div class="absolute inset-0 flex items-center" aria-hidden="true">
               <div class="w-full border-t border-gray-200" />
             </div>
-            <div class="relative flex justify-center text-sm font-medium leading-6">
-              <span class="px-6 bg-white dark:bg-gray-900">Or continue with</span>
+            <div
+              class="relative flex justify-center text-sm font-medium leading-6"
+            >
+              <span class="px-6 bg-white dark:bg-gray-900"
+                >Or continue with</span
+              >
             </div>
           </div>
 
