@@ -17,10 +17,6 @@ const props = defineProps({
 
 <template>
   <div class="my-4">
-    <UAvatar
-      :size="props.size"
-      src="https://avatars.githubusercontent.com/u/739984?v=4"
-      :alt="props.alt"
-    />
+    <UAvatar :size="props.size" :src="props.src" :alt="props.alt" />
   </div>
 </template>
