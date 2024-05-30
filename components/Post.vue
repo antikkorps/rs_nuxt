@@ -1,3 +1,12 @@
+<script setup lang="ts">
+const props = defineProps({
+  post: {
+    type: Object,
+    required: true,
+  },
+})
+</script>
+
 <template>
   <!-- Card-->
   <article
@@ -35,11 +44,10 @@
         />
       </a>
     </div>
-    <h2 class="text-3xl font-extrabold mb-2">Ma nouvelle session !!!</h2>
+    <h2 class="text-3xl font-extrabold mb-2">{{ post.title }}</h2>
 
     <p>
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-      incididunt ut labore et dolore magna aliqua.
+      {{ post.description }}
     </p>
     <div class="flex justify-between">
       <div class="py-2 flex flex-row items-center">
