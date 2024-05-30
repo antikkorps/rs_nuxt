@@ -28,9 +28,12 @@ const links = [
     <div class="flex flex-col justify-center items-center my-10">
       <div class="flex flex-col justify-center items-center">
         <div v-if="session">
+          <UiAvatar
+            class="flex justify-center mx-auto"
+            :size="`xl`"
+            :src="session.user?.avatar"
+          />
           <UiLogoutBtn />
-
-          <UiAvatar class="flex justify-center mx-auto" :size="`xl`" />
         </div>
         <div v-else class="flex flex-row justify-center items-center gap-x-3">
           <UiSignupBtn />
