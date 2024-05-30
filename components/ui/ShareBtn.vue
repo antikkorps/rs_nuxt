@@ -7,7 +7,7 @@ const share = () => {
 <template>
   <div class="flex items-center space-x-2">
     <button
-      class="flex items-center justify-center w-8 h-8 rounded-full bg-gray-100 dark:bg-gray-800"
+      class="flex items-center justify-center w-8 h-8 rounded-full bg-gray-100 dark:bg-neutral-800"
       @click="share"
     >
       <Icon
