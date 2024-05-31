@@ -1,51 +1,65 @@
 <script setup lang="ts">
+import type { User } from "@auth/core/types";
+import { unknown } from "zod";
+import { userSchema } from "~/schemas/user-schema";
 
 const props = defineProps({
-    likedItemId: {
-        type: Number
-    },
-    likeType: {
-        type: String,
-        default: 'POST'
-    }
-})
+  likedItemId: {
+    type: Number,
+  },
+  likeType: {
+    type: String,
+    default: "POST",
+  },
+  user: {
+    type: Object as PropType<User | null>,
+    default: null,
+    required: false,
+  },
+});
 
+const toast = useToast();
 
-const liked = ref(false)
-
+const liked = ref(false);
 const toggleLike = async () => {
-  liked.value = !liked.value
-
-  const response = await fetch('/api/v1/like', {
-    method: 'POST',
-    body: JSON.stringify({
-      likedItemId: props.likedItemId,
-      likeType: props.likeType,
-    }),
-  })
-  const data = await response.json()
-}
+  if (props.user && props.user !== undefined) {
+  liked.value = !liked.value;
+    const response = await fetch("/api/v1/like", {
+      method: "POST",
+      body: JSON.stringify({
+        likedItemId: props.likedItemId,
+        likeType: props.likeType,
+      }),
+    });
+    const data = await response.json();
+  } else {
+    toast.add({ title: "Vous devez être connecté !", icon: "i-heroicons-information-circle", color: "red"});
+    return;
+  }
+};
 
 const checkIfILiked = async () => {
-  const response = await fetch(`/api/v1/like?likedItemId=${props.likedItemId}`, {
-    method: 'GET'
-  })
-  const data = await response.json()
-  if(data === true) {
-    liked.value = true
+  if(props.user) {
+    const response = await fetch(
+    `/api/v1/like?likedItemId=${props.likedItemId}`,
+    {
+      method: "GET",
+    }
+  );
+  const data = await response.json();
+  if (data === true) {
+    liked.value = true;
   }
-
-}
+  }
+};
 
 onMounted(() => {
-  checkIfILiked()
-})
-
+    checkIfILiked();
+});
 </script>
 <template>
   <div>
-    <p @click="checkIfILiked">TEST</p>
-    <div class="my-2 mr-2">
+    <div class="my-2 mr-2 cursor-pointer">
       <Transition name="fade" mode="out-in">
         <Icon
           v-if="liked"

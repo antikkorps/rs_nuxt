@@ -6,7 +6,8 @@ const props = defineProps({
   },
 })
 
-
+const { session } = useAuth()
+const user = session.value?.user
 </script>
 
 <template>
@@ -54,7 +55,7 @@ const props = defineProps({
     <div class="flex justify-between">
       <div class="py-2 flex flex-row items-center">
         <div class="inline-flex items-center" href="#">
-          <UiLikeBtn :likedItemId="post.id" likeType='POST' />
+          <UiLikeBtn :likedItemId="post.id" likeType='POST' :user="user" />
 
           <span class="text-lg font-bold">68</span>
         </div>
