@@ -1,10 +1,43 @@
 <script setup lang="ts">
-const liked = ref(false)
+const props = defineProps({
+  userId: {
+    type: String as PropType<String | null>,
+    default: null,
+    required: false,
+  },
 
-const toggleBookmark = () => {
-  liked.value = !liked.value
+  postId: {
+    type: Number,
+    required: true,
+  },
+
+  isBookmarked: {
+    type: Boolean,
+    default: false,
+  },
+});
+const toast = useToast();
+
+const liked = ref(props.isBookmarked)
+
+const toggleBookmark = async () => {
+  if (props.userId && props.userId !== undefined) {
+    liked.value = !liked.value;
+    const response = await fetch("/api/v1/bookmark", {
+      method: "POST",
+      body: JSON.stringify({
+        postId: props.postId,
+      }),
+    });
+    const data = await response.json();
+  } else {
+    toast.add({ title: "Vous devez être connecté !", icon: "i-heroicons-information-circle", color: "red"});
+    return;
+  }
 }
+
 </script>
+
 <template>
   <div class="my-2">
     <Transition name="fade" mode="out-in">

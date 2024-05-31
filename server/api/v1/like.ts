@@ -1,6 +1,6 @@
 import { LikeType, PrismaClient } from "@prisma/client";
 import { likeSchema } from "~/schemas/like-schema";
-import { getServerSession, getServerToken } from "#auth";
+import { getServerSession } from "#auth";
 import { authOptions } from "../auth/[...]";
 
 const prisma = new PrismaClient();
@@ -85,7 +85,7 @@ export default defineEventHandler(async (event) => {
     const existingLike = await prisma.like.findUnique({
       where: {
         userId_likedItemId: {
-          userId: parseInt(session.user.id as string),
+          userId: session.user.id as string,
           likedItemId: likedItemId,
         },
       },

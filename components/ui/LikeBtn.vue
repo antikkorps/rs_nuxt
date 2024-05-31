@@ -1,7 +1,4 @@
 <script setup lang="ts">
-import type { User } from "@auth/core/types";
-import { unknown } from "zod";
-import { userSchema } from "~/schemas/user-schema";
 
 const props = defineProps({
   likedItemId: {
@@ -11,18 +8,22 @@ const props = defineProps({
     type: String,
     default: "POST",
   },
-  user: {
-    type: Object as PropType<User | null>,
+  isLiked: {
+    type: Boolean,
+    default: false,
+  },
+  userId: {
+    type: String as PropType<String | null>,
     default: null,
     required: false,
-  },
+  }
 });
 
 const toast = useToast();
 
-const liked = ref(false);
+const liked = ref(props.isLiked);
 const toggleLike = async () => {
-  if (props.user && props.user !== undefined) {
+  if (props.userId) {
   liked.value = !liked.value;
     const response = await fetch("/api/v1/like", {
       method: "POST",
@@ -37,25 +38,6 @@ const toggleLike = async () => {
     return;
   }
 };
-
-const checkIfILiked = async () => {
-  if(props.user) {
-    const response = await fetch(
-    `/api/v1/like?likedItemId=${props.likedItemId}`,
-    {
-      method: "GET",
-    }
-  );
-  const data = await response.json();
-  if (data === true) {
-    liked.value = true;
-  }
-  }
-};
-
-onMounted(() => {
-    checkIfILiked();
-});
 </script>
 <template>
   <div>
