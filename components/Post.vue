@@ -5,6 +5,8 @@ const props = defineProps({
     required: true,
   },
 })
+
+
 </script>
 
 <template>
@@ -52,7 +54,7 @@ const props = defineProps({
     <div class="flex justify-between">
       <div class="py-2 flex flex-row items-center">
         <div class="inline-flex items-center" href="#">
-          <UiLikeBtn />
+          <UiLikeBtn :likedItemId="post.id" likeType='POST' />
 
           <span class="text-lg font-bold">68</span>
         </div>
@@ -100,7 +102,7 @@ const props = defineProps({
           </p>
           <div class="flex items-center">
             <div class="inline-flex items-center py-2 mr-3">
-              <UiLikeBtn />
+              <!-- <UiLikeBtn /> -->
 
               <span class="text-base font-bold">2</span>
             </div>
@@ -130,7 +132,7 @@ const props = defineProps({
           <p>Dolor sit ameteiusmod consectetur adipiscing elit.</p>
           <div class="flex items-center">
             <div class="inline-flex items-center py-2 mr-3">
-              <UiLikeBtn />
+              <!-- <UiLikeBtn /> -->
 
               <span class="text-base font-bold">2</span>
             </div>
