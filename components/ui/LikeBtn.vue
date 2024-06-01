@@ -1,8 +1,11 @@
 <script setup lang="ts">
+import { likeUnlike } from '~/services/likeServices';
+
 
 const props = defineProps({
   likedItemId: {
     type: Number,
+    required: true,
   },
   likeType: {
     type: String,
@@ -25,14 +28,7 @@ const liked = ref(props.isLiked);
 const toggleLike = async () => {
   if (props.userId) {
   liked.value = !liked.value;
-    const response = await fetch("/api/v1/like", {
-      method: "POST",
-      body: JSON.stringify({
-        likedItemId: props.likedItemId,
-        likeType: props.likeType,
-      }),
-    });
-    const data = await response.json();
+  await likeUnlike({likedItemId: props.likedItemId, likeType: props.likeType})
   } else {
     toast.add({ title: "Vous devez être connecté !", icon: "i-heroicons-information-circle", color: "red"});
     return;
