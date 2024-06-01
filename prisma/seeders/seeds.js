@@ -89,6 +89,7 @@ async function main() {
   }
 
   //Create 10 posts
+
   for (let i = 0; i < 10; i++) {
     await prisma.post.create({
       data: {
@@ -105,6 +106,49 @@ async function main() {
       },
     })
   }
+  const postWithComment = await prisma.post.create({
+    data: {
+      userId: testUser.id,
+      views: faker.number.int({ min: 0, max: 10000 }),
+      repost: faker.number.int({ min: 0, max: 10000 }),
+      title: faker.lorem.sentence(),
+      description: faker.lorem.paragraphs(),
+      mediaPosts: {
+        create: {
+          url: faker.image.urlPicsumPhotos({ width: 480, height: 640 }),
+        },
+      },
+    },
+  })
+
+
+  const comments = [];
+  for (let j = 0; j < 100; j++) {
+    const comment = await prisma.comment.create({
+      data: {
+        description: faker.lorem.sentence(),
+        postId: postWithComment.id,
+        userId: testUser.id,
+      },
+    });
+    comments.push(comment);
+  }
+
+  // Ajout de commentaires enfants aléatoirement à certains commentaires
+  for (const comment of comments) {
+    const numChildren = faker.datatype.number({ min: 10, max: 50 });
+    for (let k = 0; k < numChildren; k++) {
+      await prisma.comment.create({
+        data: {
+          description: faker.lorem.sentence(),
+          postId: postWithComment.id,
+          userId: testUser.id,
+          parentId: comment.id,
+        },
+      });
+    }
+  }
+
 
   //   // Create 10 regular users
   //   for (let i = 0; i < 10; i++) {
