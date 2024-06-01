@@ -1,51 +1,43 @@
 <script setup lang="ts">
+import { likeUnlike } from '~/services/likeServices';
+
 
 const props = defineProps({
-    likedItemId: {
-        type: Number
-    },
-    likeType: {
-        type: String,
-        default: 'POST'
-    }
-})
-
-
-const liked = ref(false)
-
-const toggleLike = async () => {
-  liked.value = !liked.value
-
-  const response = await fetch('/api/v1/like', {
-    method: 'POST',
-    body: JSON.stringify({
-      likedItemId: props.likedItemId,
-      likeType: props.likeType,
-    }),
-  })
-  const data = await response.json()
-}
-
-const checkIfILiked = async () => {
-  const response = await fetch(`/api/v1/like?likedItemId=${props.likedItemId}`, {
-    method: 'GET'
-  })
-  const data = await response.json()
-  if(data === true) {
-    liked.value = true
+  likedItemId: {
+    type: Number,
+    required: true,
+  },
+  likeType: {
+    type: String,
+    default: "POST",
+  },
+  isLiked: {
+    type: Boolean,
+    default: false,
+  },
+  userId: {
+    type: String as PropType<String | null>,
+    default: null,
+    required: false,
   }
+});
 
-}
+const toast = useToast();
 
-onMounted(() => {
-  checkIfILiked()
-})
-
+const liked = ref(props.isLiked);
+const toggleLike = async () => {
+  if (props.userId) {
+  liked.value = !liked.value;
+  await likeUnlike({likedItemId: props.likedItemId, likeType: props.likeType})
+  } else {
+    toast.add({ title: "Vous devez être connecté !", icon: "i-heroicons-information-circle", color: "red"});
+    return;
+  }
+};
 </script>
 <template>
   <div>
-    <p @click="checkIfILiked">TEST</p>
-    <div class="my-2 mr-2">
+    <div class="my-2 mr-2 cursor-pointer">
       <Transition name="fade" mode="out-in">
         <Icon
           v-if="liked"

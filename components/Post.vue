@@ -1,12 +1,15 @@
 <script setup lang="ts">
+import type { PostWithBoolean } from '~/server/api/v1/posts';
+
 const props = defineProps({
   post: {
-    type: Object,
+    type: Object as PropType<PostWithBoolean>,
     required: true,
   },
 })
 
-
+const { session } = useAuth()
+const user = session.value?.user
 </script>
 
 <template>
@@ -54,7 +57,7 @@ const props = defineProps({
     <div class="flex justify-between">
       <div class="py-2 flex flex-row items-center">
         <div class="inline-flex items-center" href="#">
-          <UiLikeBtn :likedItemId="post.id" likeType='POST' />
+          <UiLikeBtn :likedItemId="post.id" likeType='POST' :userId="user?.id" :isLiked="post.isLiked" />
 
           <span class="text-lg font-bold">68</span>
         </div>
@@ -62,7 +65,7 @@ const props = defineProps({
       </div>
       <div class="flex items-center">
         <UiShareBtn />
-        <UiBookmarkBtn />
+        <UiBookmarkBtn :userId="user?.id" :postId="post.id" :isBookmarked="post.isBookmarked" />
       </div>
     </div>
 
