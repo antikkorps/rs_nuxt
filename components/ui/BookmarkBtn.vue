@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { attachDetachBookmark } from '~/services/bookmarkServices';
+import { bookmarkServices } from '@/services';
 
 const props = defineProps({
   userId: {
@@ -25,7 +25,7 @@ const liked = ref(props.isBookmarked)
 const toggleBookmark = async () => {
   if (props.userId && props.userId !== undefined) {
     liked.value = !liked.value;
-    await attachDetachBookmark(props.postId)
+    await bookmarkServices.attachDetachBookmark(props.postId)
   } else {
     toast.add({ title: "Vous devez être connecté !", icon: "i-heroicons-information-circle", color: "red"});
     return;

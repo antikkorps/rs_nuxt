@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { likeUnlike } from '~/services/likeServices';
-
+import {likeServices} from "@/services"
 
 const props = defineProps({
   likedItemId: {
@@ -28,7 +27,7 @@ const liked = ref(props.isLiked);
 const toggleLike = async () => {
   if (props.userId) {
   liked.value = !liked.value;
-  await likeUnlike({likedItemId: props.likedItemId, likeType: props.likeType})
+  await likeServices.likeUnlike({likedItemId: props.likedItemId, likeType: props.likeType})
   } else {
     toast.add({ title: "Vous devez être connecté !", icon: "i-heroicons-information-circle", color: "red"});
     return;
