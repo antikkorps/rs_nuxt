@@ -1,10 +1,39 @@
 <script setup lang="ts">
-const liked = ref(false)
+import { bookmarkServices } from '@/services';
 
-const toggleBookmark = () => {
-  liked.value = !liked.value
+const props = defineProps({
+  userId: {
+    type: String as PropType<String | null>,
+    default: null,
+    required: false,
+  },
+
+  postId: {
+    type: Number,
+    required: true,
+  },
+
+  isBookmarked: {
+    type: Boolean,
+    default: false,
+  },
+});
+const toast = useToast();
+
+const liked = ref(props.isBookmarked)
+
+const toggleBookmark = async () => {
+  if (props.userId && props.userId !== undefined) {
+    liked.value = !liked.value;
+    await bookmarkServices.attachDetachBookmark(props.postId)
+  } else {
+    toast.add({ title: "Vous devez être connecté !", icon: "i-heroicons-information-circle", color: "red"});
+    return;
+  }
 }
+
 </script>
+
 <template>
   <div class="my-2">
     <Transition name="fade" mode="out-in">

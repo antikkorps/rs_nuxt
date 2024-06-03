@@ -5,7 +5,11 @@ const posts = ref([])
 onMounted(async () => {
   const response = await postServices.getAllPosts()
   posts.value = response.posts
+
+  console.log(posts)
 })
+
+
 </script>
 <template>
   <div class="flex flex-col justify-center mx-auto w-full">

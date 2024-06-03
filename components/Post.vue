@@ -1,12 +1,15 @@
 <script setup lang="ts">
+import type { PostWithBoolean } from '~/server/api/v1/posts';
+
 const props = defineProps({
   post: {
-    type: Object,
+    type: Object as PropType<PostWithBoolean>,
     required: true,
   },
 })
 
-
+const { session } = useAuth()
+const user = session.value?.user
 </script>
 
 <template>
@@ -54,7 +57,7 @@ const props = defineProps({
     <div class="flex justify-between">
       <div class="py-2 flex flex-row items-center">
         <div class="inline-flex items-center" href="#">
-          <UiLikeBtn :likedItemId="post.id" likeType='POST' />
+          <UiLikeBtn :likedItemId="post.id" likeType='POST' :userId="user?.id" :isLiked="post.isLiked" />
 
           <span class="text-lg font-bold">68</span>
         </div>
@@ -62,7 +65,7 @@ const props = defineProps({
       </div>
       <div class="flex items-center">
         <UiShareBtn />
-        <UiBookmarkBtn />
+        <UiBookmarkBtn :userId="user?.id" :postId="post.id" :isBookmarked="post.isBookmarked" />
       </div>
     </div>
 
@@ -84,68 +87,7 @@ const props = defineProps({
     </div>
     <!-- Comments content -->
     <div class="pt-6">
-      <!-- Comment row -->
-      <div class="media flex pb-4">
-        <a class="mr-4" href="#">
-          <img
-            class="rounded-full max-w-none w-12 h-12"
-            src="https://randomuser.me/api/portraits/men/83.jpg"
-          />
-        </a>
-        <div class="media-body">
-          <div>
-            <a class="inline-block text-base font-bold mr-2" href="#">Ronald Richards</a>
-            <span class="text-neutral-500 dark:text-neutral-300">25 minutes ago</span>
-          </div>
-          <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit sed do eiusmod 😀😀😀
-          </p>
-          <div class="flex items-center">
-            <div class="inline-flex items-center py-2 mr-3">
-              <!-- <UiLikeBtn /> -->
-
-              <span class="text-base font-bold">2</span>
-            </div>
-            <UiEmojiPicker />
-            <button
-              class="py-2 px-4 font-medium hover:bg-neutral-50 dark:hover:bg-neutral-700 rounded-lg"
-            >
-              Répondre
-            </button>
-          </div>
-        </div>
-      </div>
-      <!-- End comments row -->
-      <!-- comments row -->
-      <div class="media flex pb-4">
-        <a class="inline-block mr-4" href="#">
-          <img
-            class="rounded-full max-w-none w-12 h-12"
-            src="https://randomuser.me/api/portraits/women/74.jpg"
-          />
-        </a>
-        <div class="media-body">
-          <div>
-            <a class="inline-block text-base font-bold mr-2" href="#">Natalia Jímenez</a>
-            <span class="text-neutral-500 dark:text-neutral-300">3 minutes ago</span>
-          </div>
-          <p>Dolor sit ameteiusmod consectetur adipiscing elit.</p>
-          <div class="flex items-center">
-            <div class="inline-flex items-center py-2 mr-3">
-              <!-- <UiLikeBtn /> -->
-
-              <span class="text-base font-bold">2</span>
-            </div>
-            <UiEmojiPicker />
-            <button
-              class="py-2 px-4 font-medium hover:bg-neutral-50 dark:hover:bg-neutral-700 rounded-lg"
-            >
-              Répondre
-            </button>
-          </div>
-        </div>
-      </div>
-      <!-- End comments row -->
+      <UiCommentsRow v-for="(comment, index) in post.comments" :key="index" :comment="comment" />
       <!-- More comments -->
       <div class="w-full">
         <a

@@ -21,7 +21,7 @@ enum Sex {
 }
 
 model User {
-  id            Int                @id @default(autoincrement())
+  id            String             @id @default(uuid())
   email         String             @unique
   pseudo        String             @unique
   firstname     String?
@@ -70,7 +70,7 @@ model Post {
   views      Int?
   shared     Int?
   repost     Int?
-  userId     Int
+  userId     String
   user       User        @relation("posts", fields: [userId], references: [id])
   tags       PostTag[]   @relation("postTags")
   // Maybe we can delete mediaPost
@@ -137,7 +137,7 @@ model PostContent {
 model PinnedPost {
   id        Int       @id @default(autoincrement())
   postId    Int
-  userId    Int
+  userId    String
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   deletedAt DateTime?
@@ -173,7 +173,7 @@ model MediaPost {
 // }
 model Bookmark {
   id     Int  @id @default(autoincrement())
-  userId Int
+  userId String
   user   User @relation("userBookmarks", fields: [userId], references: [id])
 
   postId Int
@@ -204,7 +204,7 @@ model Comment {
   
   postId      Int
   post        Post    @relation("postComments", fields: [postId], references: [id], onDelete: Cascade)
-  userId      Int
+  userId      String
   user        User    @relation("userComments", fields: [userId], references: [id], onDelete: Cascade)
 
   parent      Comment?  @relation("ParentChild", fields: [parentId], references: [id], onDelete: Cascade)
@@ -231,7 +231,7 @@ model Like {
   likeType    LikeType
   likedItemId Int
   userLiking  User     @relation("userLiking", fields: [userId], references: [id], onDelete: Cascade)
-  userId      Int
+  userId      String
   createdAt   DateTime @default(now())
 
   post Post? @relation("postLikes", fields: [likedItemId], references: [id], onDelete: Cascade)
@@ -293,10 +293,10 @@ model InstantMessage {
   updatedAt DateTime @updatedAt
 
   userEmitter User @relation("EmitterMessages", fields: [emitterId], references: [id], onDelete: Cascade)
-  emitterId   Int
+  emitterId   String
 
   userReceiver User @relation("ReceiverMessages", fields: [receiverId], references: [id], onDelete: Cascade)
-  receiverId   Int
+  receiverId   String
 
   contents MessageContent[]
 
@@ -323,7 +323,7 @@ model SubscriptionUser {
   status             String
   billing_next_date  DateTime?
 
-  userId Int
+  userId String
   user   User @relation(fields: [userId], references: [id])
 
   subscriptionId Int
@@ -352,7 +352,7 @@ model Salon {
   street      String
   zipcode     String
   country     String
-  userId      Int
+  userId      String
   user        User    @relation("userToSalons", fields: [userId], references: [id])
 
   @@map("salons")
@@ -372,7 +372,7 @@ model Report {
   reportType    ReportType
   reportItemId  Int
   userReporting User       @relation("userReporting", fields: [userId], references: [id])
-  userId        Int
+  userId        String
 }
 
 // TABLES PERMISSIONS
@@ -388,7 +388,7 @@ model Role {
 }
 
 model RoleUser {
-  userId Int
+  userId String
   // roleId Int
 
   roleSlug String
@@ -449,7 +449,7 @@ model ProfileImage {
   url    String
   name   String?
   status ImageStatus @default(ACTIVE)
-  userId Int
+  userId String
   user   User        @relation("profileImage", fields: [userId], references: [id])
 
   @@map("profileImages")
@@ -466,7 +466,7 @@ model BannerImage {
   url    String
   name   String?
   status BannerStatus @default(ACTIVE)
-  userId Int
+  userId String
   user   User         @relation("bannerImage", fields: [userId], references: [id])
 
   @@map("bannerImages")
@@ -474,10 +474,10 @@ model BannerImage {
 
 model Follow {
   id         Int  @id @default(autoincrement())
-  followerId Int
+  followerId String
   follower   User @relation("followerId", fields: [followerId], references: [id])
 
-  followedId Int
+  followedId String
   followed   User @relation("followedId", fields: [followedId], references: [id])
 
   createdAt DateTime @default(now())
