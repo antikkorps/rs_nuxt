@@ -5,14 +5,15 @@ import { authOptions } from "../auth/[...]";
 const prisma = new PrismaClient();
 
 export interface PostWithLikesAndBookmarks extends Post {
-  likes: { id: number }[];
+  postLikes: { id: number }[];
   bookmarkedPosts: { id: number }[];
 }
 
 export interface PostWithBoolean
-  extends Omit<PostWithLikesAndBookmarks, "likes" | "bookmarkedPosts"> {
+  extends Omit<PostWithLikesAndBookmarks, "postLikes" | "bookmarkedPosts"> {
   isLiked: boolean;
   isBookmarked: boolean;
+  comments: Comment[];
 }
 
 export default defineEventHandler(async (event) => {
@@ -35,10 +36,9 @@ export default defineEventHandler(async (event) => {
 
       const rawPosts = (await prisma.post.findMany({
         include: {
-          likes: {
+          postLikes: {
             where: {
               userId: user.id,
-              likeType: "POST",
             },
             select: {
               id: true,
@@ -57,7 +57,7 @@ export default defineEventHandler(async (event) => {
 
       posts = rawPosts.map((post) => ({
         ...post,
-        isLiked: post.likes.length > 0,
+        isLiked: post.postLikes.length > 0,
         isBookmarked: post.bookmarkedPosts.length > 0,
         comments: [],
         totalComments: 0,
@@ -65,29 +65,64 @@ export default defineEventHandler(async (event) => {
     }
 
     const postIds = posts.map((post) => post.id);
-    const comments = await prisma.comment.findMany({
-      where: {
-        postId: {
-          in: postIds,
+
+    let comments: Comment[] | null = [];
+    if (!session || !session.user) {
+       comments = await prisma.comment.findMany({
+        where: {
+          postId: {
+            in: postIds,
+          },
+          parentId: null,
         },
-        parentId: null,
-      },
-      include : {
-        user: {
-          select: {
-            pseudo: true,
-            avatar: true,
-            firstname: true,
-            lastname: true
+        include: {
+          user: {
+            select: {
+              pseudo: true,
+              avatar: true,
+              firstname: true,
+              lastname: true,
+            },
           }
         },
-        
-      },
-      orderBy: {
-        createdAt: "desc",
-      },
-      take: 3,
-    });
+        orderBy: {
+          createdAt: "desc",
+        },
+        take: 3,
+      });
+    } else {
+      const user = session.user;
+      comments = await prisma.comment.findMany({
+        where: {
+          postId: {
+            in: postIds,
+          },
+          parentId: null,
+        },
+        include: {
+          user: {
+            select: {
+              pseudo: true,
+              avatar: true,
+              firstname: true,
+              lastname: true,
+            },
+          },
+          commentLikes: {
+            where: {
+              userId: user.id
+            },
+            select: {
+              id: true,
+            },
+          },
+        },
+        orderBy: {
+          createdAt: "desc",
+        },
+        take: 3,
+      });
+    }
 
     const commentsGroupedByPost = comments.reduce((acc, comment) => {
       if (!acc[comment.postId]) {
@@ -97,9 +132,8 @@ export default defineEventHandler(async (event) => {
       return acc;
     }, {} as Record<number, Comment[]>);
 
-
     const totalCommentsCounts = await prisma.comment.groupBy({
-      by: ['postId'],
+      by: ["postId"],
       where: {
         postId: {
           in: postIds,
@@ -111,32 +145,38 @@ export default defineEventHandler(async (event) => {
       },
     });
 
-    const totalCommentsMap = totalCommentsCounts.reduce((acc, { postId, _count }) => {
-      acc[postId] = _count.id;
-      return acc;
-    }, {} as Record<number, number>);
+    const totalCommentsMap = totalCommentsCounts.reduce(
+      (acc, { postId, _count }) => {
+        acc[postId] = _count.id;
+        return acc;
+      },
+      {} as Record<number, number>
+    );
 
     const commentIds = comments.map((comment) => comment.id);
-const childCommentCounts = await prisma.comment.groupBy({
-  by: ["parentId"],
-  where: {
-    parentId: {
-      in: commentIds,
-    },
-  },
-  _count: {
-    id: true,
-  },
-});
+    const childCommentCounts = await prisma.comment.groupBy({
+      by: ["parentId"],
+      where: {
+        parentId: {
+          in: commentIds,
+        },
+      },
+      _count: {
+        id: true,
+      },
+    });
 
-const childCommentMap = childCommentCounts.reduce((acc, { parentId, _count }) => {
-  acc[parentId] = _count.id;
-  return acc;
-}, {} as Record<number, number>);
+    const childCommentMap = childCommentCounts.reduce(
+      (acc, { parentId, _count }) => {
+        acc[parentId] = _count.id;
+        return acc;
+      },
+      {} as Record<number, number>
+    );
     // Attach the comments to the corresponding posts
     posts = posts.map((post) => ({
       ...post,
-      comments: (commentsGroupedByPost[post.id] || []).map(comment => ({
+      comments: (commentsGroupedByPost[post.id] || []).map((comment) => ({
         ...comment,
         childCommentCount: childCommentMap[comment.id] || 0,
       })),

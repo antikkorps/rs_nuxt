@@ -1,5 +1,9 @@
-import { LikeType } from "@prisma/client";
 import { z } from "zod";
+
+export const LikeType = {
+  POST: "POST",
+  COMMENT: "COMMENT",
+};
 
 export const likeSchema = z.object({
     likedItemId: z.coerce.number(),

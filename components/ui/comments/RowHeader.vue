@@ -1,10 +1,20 @@
 <script setup lang="ts">
+import type { CommentFormatedWithCommentLikes } from '~/types/types';
+
 const props = defineProps({
   comment: {
-    type: Object as PropType<Comment>,
+    type: Object as PropType<CommentFormatedWithCommentLikes>,
     required: true,
   },
 });
+
+
+import { formatDistanceToNow } from 'date-fns';
+import { fr } from 'date-fns/locale';
+
+function formatTimeAgo(date: Date): string {
+  return formatDistanceToNow(date, { addSuffix: true, locale: fr });
+}
 </script>
 
 <template>
@@ -24,6 +34,6 @@ const props = defineProps({
         >{{ comment.user.pseudo }}
       </span>
     </a>
-    <span class="text-neutral-500 dark:text-neutral-300">25 minutes ago</span>
+    <span class="text-neutral-500 dark:text-neutral-300">{{ formatTimeAgo(comment.createdAt) }}</span>
   </div>
 </template>

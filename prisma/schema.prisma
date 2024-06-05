@@ -21,42 +21,43 @@ enum Sex {
 }
 
 model User {
-  id            String             @id @default(uuid())
-  email         String             @unique
-  pseudo        String             @unique
-  firstname     String?
-  lastname      String?
-  password      String
-  resetToken    String?
-  webpage       String?
+  id               String             @id @default(uuid())
+  email            String             @unique
+  pseudo           String             @unique
+  firstname        String?
+  lastname         String?
+  password         String
+  resetToken       String?
+  webpage          String?
   textPresentation String?
-  createdAt     DateTime           @default(now())
-  updatedAt     DateTime           @updatedAt
-  avatar        String?
-  birth         DateTime?
-  sex           Sex?
-  subscriptions SubscriptionUser[]
-  salons        Salon[]            @relation("userToSalons")
-  profile_image ProfileImage[]     @relation("profileImage")
-  banner_image  BannerImage[]      @relation("bannerImage")
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @updatedAt
+  avatar           String?
+  birth            DateTime?
+  sex              Sex?
+  subscriptions    SubscriptionUser[]
+  salons           Salon[]            @relation("userToSalons")
+  profile_image    ProfileImage[]     @relation("profileImage")
+  banner_image     BannerImage[]      @relation("bannerImage")
 
   i_follow    Follow[] @relation("followerId")
   they_follow Follow[] @relation("followedId")
 
-  roles RoleUser[] 
+  roles RoleUser[]
 
   posts             Post[]           @relation("posts")
   // savedPost         SavedPost[]      @relation("userSavedPosts")
   bookMark          Bookmark[]       @relation("userBookmarks")
   userComments      Comment[]        @relation("userComments")
-  userlikes         Like[]           @relation("userLiking")
   userReports       Report[]         @relation("userReporting")
   messages_emitted  InstantMessage[] @relation("EmitterMessages")
   messages_received InstantMessage[] @relation("ReceiverMessages")
   pinned_post       PinnedPost[]     @relation("userPinnedPost")
 
   confirmedAt DateTime?
-  
+  postLikes         PostLike[]       @relation("userPostLikes")
+  commentLikes      CommentLike[]    @relation("userCommentLikes")
+
   @@index(fields: [firstname, lastname, email], name: "main_user_index")
   @@map("users")
 }
@@ -76,11 +77,13 @@ model Post {
   // Maybe we can delete mediaPost
   mediaPosts MediaPost[] @relation("mediaPost")
 
-  likes          Like[]       @relation("postLikes")
-  comments       Comment[]    @relation("postComments")
+
+  comments        Comment[]    @relation("postComments")
   // userSavedPosts SavedPost[]  @relation("userSavedPosts")
-  bookmarkedPosts Bookmark[]  @relation("userBookmarks")
-  pinnedPosts    PinnedPost[] @relation("pinnedPost")
+  bookmarkedPosts Bookmark[]   @relation("userBookmarks")
+  pinnedPosts     PinnedPost[] @relation("pinnedPost")
+
+  postLikes       PostLike[]   @relation("postLikes")
 
   // Add for the post Content by Karl 12/01
   postTypeChoice PostTypeChoice[] @relation("postType")
@@ -91,8 +94,22 @@ model Post {
   updatedAt DateTime  @updatedAt
   deletedAt DateTime?
 
+
   @@index([userId, id], name: "main_post_index")
   @@map("posts")
+}
+
+model PostLike {
+  id        Int      @id @default(autoincrement())
+  postId    Int
+  post      Post     @relation("postLikes", fields: [postId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User     @relation("userPostLikes", fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@unique([userId, postId])
+  @@index([userId, postId], name: "main_post_like_index")
+  @@map("postLikes")
 }
 
 enum PostType {
@@ -144,7 +161,7 @@ model PinnedPost {
 
   user User @relation("userPinnedPost", fields: [userId], references: [id])
   post Post @relation("pinnedPost", fields: [postId], references: [id])
-  
+
   @@map("pinnedPosts")
 }
 
@@ -172,9 +189,9 @@ model MediaPost {
 //   @@map("savedPosts")
 // }
 model Bookmark {
-  id     Int  @id @default(autoincrement())
+  id     Int    @id @default(autoincrement())
   userId String
-  user   User @relation("userBookmarks", fields: [userId], references: [id])
+  user   User   @relation("userBookmarks", fields: [userId], references: [id])
 
   postId Int
   post   Post @relation("userBookmarks", fields: [postId], references: [id])
@@ -197,24 +214,37 @@ model PostTag {
   @@map("postsTags")
 }
 
-
 model Comment {
   id          Int     @id @default(autoincrement())
   description String?
-  
-  postId      Int
-  post        Post    @relation("postComments", fields: [postId], references: [id], onDelete: Cascade)
-  userId      String
-  user        User    @relation("userComments", fields: [userId], references: [id], onDelete: Cascade)
 
-  parent      Comment?  @relation("ParentChild", fields: [parentId], references: [id], onDelete: Cascade)
-  children    Comment[] @relation("ParentChild")
-  parentId    Int? 
+  postId Int
+  post   Post   @relation("postComments", fields: [postId], references: [id], onDelete: Cascade)
+  userId String
+  user   User   @relation("userComments", fields: [userId], references: [id], onDelete: Cascade)
 
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+  parent   Comment?  @relation("ParentChild", fields: [parentId], references: [id], onDelete: Cascade)
+  children Comment[] @relation("ParentChild")
+  parentId Int?
 
+  commentLikes CommentLike[] @relation("commentLikes")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
   @@map("comments")
+}
+
+model CommentLike {
+  id        Int      @id @default(autoincrement())
+  commentId Int
+  comment   Comment  @relation("commentLikes", fields: [commentId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User     @relation("userCommentLikes", fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@unique([userId, commentId])
+  @@index([userId, commentId], name: "main_comment_like_index")
+  @@map("commentLikes")
 }
 
 model Tag {
@@ -226,21 +256,7 @@ model Tag {
 }
 
 // Polymorphic like
-model Like {
-  id          Int      @id @default(autoincrement())
-  likeType    LikeType
-  likedItemId Int
-  userLiking  User     @relation("userLiking", fields: [userId], references: [id], onDelete: Cascade)
-  userId      String
-  createdAt   DateTime @default(now())
 
-  post Post? @relation("postLikes", fields: [likedItemId], references: [id], onDelete: Cascade)
-  // Do we need relation here for all the enums? As we can add the on delete cascade
-
-  @@unique([userId, likedItemId])
-  @@index([userId, likedItemId], name: "main_like_index")
-  @@map("likes")
-}
 
 enum LikeType {
   POST
@@ -292,10 +308,10 @@ model InstantMessage {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  userEmitter User @relation("EmitterMessages", fields: [emitterId], references: [id], onDelete: Cascade)
+  userEmitter User   @relation("EmitterMessages", fields: [emitterId], references: [id], onDelete: Cascade)
   emitterId   String
 
-  userReceiver User @relation("ReceiverMessages", fields: [receiverId], references: [id], onDelete: Cascade)
+  userReceiver User   @relation("ReceiverMessages", fields: [receiverId], references: [id], onDelete: Cascade)
   receiverId   String
 
   contents MessageContent[]
@@ -324,7 +340,7 @@ model SubscriptionUser {
   billing_next_date  DateTime?
 
   userId String
-  user   User @relation(fields: [userId], references: [id])
+  user   User   @relation(fields: [userId], references: [id])
 
   subscriptionId Int
   subscription   Subscription @relation(fields: [subscriptionId], references: [id])
@@ -473,12 +489,12 @@ model BannerImage {
 }
 
 model Follow {
-  id         Int  @id @default(autoincrement())
+  id         Int    @id @default(autoincrement())
   followerId String
-  follower   User @relation("followerId", fields: [followerId], references: [id])
+  follower   User   @relation("followerId", fields: [followerId], references: [id])
 
   followedId String
-  followed   User @relation("followedId", fields: [followedId], references: [id])
+  followed   User   @relation("followedId", fields: [followedId], references: [id])
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
