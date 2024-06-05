@@ -1,16 +1,28 @@
 <script setup lang="ts">
+import type { CommentFormatedWithCommentLikes } from '~/types/types';
+
+
 const props = defineProps({
   comment: {
-    type: Object as PropType<Comment>,
+    type: Object as PropType<CommentFormatedWithCommentLikes>,
     required: true,
   },
+  userId: {
+    type: String as PropType<String | null>,
+    default: null,
+    required: false,
+  }
 });
+// const comment = props.comment;
+
+const isLiked = props.comment.commentLikes.length > 0 ? true : false;
+
 </script>
 
 <template>
   <div class="flex items-center">
     <div class="inline-flex items-center py-2 mr-3">
-      <UiLikeBtn />
+      <UiLikeBtn likeType='COMMENT' :likedItemId="comment.id" :userId="userId" :isLiked="isLiked"  />
 
       <span class="text-base font-bold">2</span>
     </div>

@@ -1,5 +1,6 @@
 <template>
   <div class="media flex pb-4">
+
     <a class="mr-4" href="#">
       <img
         class="rounded-full max-w-none w-12 h-12"
@@ -11,7 +12,7 @@
       <p class="mt-3">
         {{ comment.description }}
       </p>
-      <UiCommentsRowFooter :comment="comment" />
+      <UiCommentsRowFooter :comment="comment" :userId="userId" />
     </div>
   </div>
 
@@ -53,10 +54,18 @@
 </template>
 
 <script setup lang="ts">
+import type { CommentFormatedWithCommentLikes } from '~/types/types';
+
+
 const props = defineProps({
   comment: {
-    type: Object as PropType<Comment>,
+    type: Object as PropType<CommentFormatedWithCommentLikes>,
     required: true,
   },
+  userId: {
+    type: String as PropType<String | null>,
+    default: null,
+    required: false,
+  }
 });
 </script>

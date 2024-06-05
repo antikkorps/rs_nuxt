@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { PostWithBoolean } from '~/server/api/v1/posts';
+import type { CommentFormatedWithCommentLikes } from '~/types/types';
 
 const props = defineProps({
   post: {
@@ -10,10 +11,12 @@ const props = defineProps({
 
 const { session } = useAuth()
 const user = session.value?.user
+const comments = ref(props.post.comments) as unknown as Ref<CommentFormatedWithCommentLikes[]>
 </script>
 
 <template>
   <!-- Card-->
+
   <article
     class="my-4 break-inside p-6 rounded-xl bg-white dark:bg-neutral-800 flex flex-col bg-clip-border"
   >
@@ -87,7 +90,7 @@ const user = session.value?.user
     </div>
     <!-- Comments content -->
     <div class="pt-6">
-      <UiCommentsRow v-for="(comment, index) in post.comments" :key="index" :comment="comment" />
+      <UiCommentsRow v-for="(comment, index) in comments" :key="index" :comment="comment" :userId="user?.id" />
       <!-- More comments -->
       <div class="w-full">
         <a
