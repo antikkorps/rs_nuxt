@@ -11,7 +11,7 @@ const { session } = useAuth()
         <p class="text-center mt-2">Here is your profile</p>
       </div>
       <div class="flex justify-center mx-auto">
-        <img
+        <NuxtImg
           :src="session?.user?.avatar"
           class="rounded-full max-w-none w-14 h-14 sm:w-24 sm:h-24 mt-10"
         />
