@@ -6,10 +6,8 @@ onMounted(async () => {
   const response = await postServices.getAllPosts()
   posts.value = response.posts
 
-  console.log(posts)
+  console.log("here are the posts", posts)
 })
-
-
 </script>
 <template>
   <div class="flex flex-col justify-center mx-auto w-full">
