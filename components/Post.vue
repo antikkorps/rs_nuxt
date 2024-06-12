@@ -72,22 +72,7 @@ const comments = ref(props.post.comments) as unknown as Ref<CommentFormatedWithC
       </div>
     </div>
 
-    <div class="relative">
-      <input
-        class="pt-2 pb-2 pl-3 w-full h-11 bg-neutral-100 dark:bg-neutral-600 rounded-lg placeholder:text-neutral-600 dark:placeholder:text-neutral-300 font-medium pr-20"
-        type="text"
-        placeholder="Write a comment"
-      />
-      <span class="flex absolute right-3 top-2/4 -mt-3 items-center">
-        <svg
-          class="fill-blue-500 dark:fill-neutral-50"
-          style="width: 24px; height: 24px"
-          viewBox="0 0 24 24"
-        >
-          <path d="M2,21L23,12L2,3V10L17,12L2,14V21Z"></path>
-        </svg>
-      </span>
-    </div>
+    <UiCommentsCreate :postId="post.id" :userId="user?.id"/>
     <!-- Comments content -->
     <div class="pt-6">
       <UiCommentsRow v-for="(comment, index) in comments" :key="index" :comment="comment" :userId="user?.id" />
