@@ -15,7 +15,7 @@ const props = defineProps({
 });
 // const comment = props.comment;
 
-const isLiked = props.comment.commentLikes.length > 0 ? true : false;
+const isLiked =  props.comment.commentLikes && props.comment.commentLikes.length > 0 ? true : false;
 
 </script>
 

@@ -18,6 +18,5 @@ export const likeUnlike = async ({
     throw new Error("Failed to toggle like");
   }
   const data = await response.json();
-  console.log(data)
   return data;
 };
