@@ -3,6 +3,12 @@ const { session } = useAuth()
 const links = [
   { name: "Accueil", href: "/", icon: "material-symbols:other-houses" },
   { name: "profile", href: "/profile", icon: "mdi:account-tie-voice-outline" },
+  {
+    name: "Ajouter un post",
+    href: "/posts/new",
+    icon: "material-symbols:add-box-outline",
+  },
+  { name: "Posts", href: "/posts", icon: "mdi:post" },
   { name: "Messages", href: "/Messages", icon: "ic:baseline-message" },
   { name: "Dashboard", href: "/dashboard", icon: "ic:round-dashboard-customize" },
 ]
