@@ -6,7 +6,7 @@ onMounted(() => {
 })
 </script>
 <template>
-  <div class="h-screen relative top-10 sm:top-20 items-center w-full">
+  <div class="relative top-10 sm:top-20 items-center w-full">
     <UCard class="dark:bg-neutral-900 bg-neutral-100">
       <template #header>
         <div
