@@ -1,10 +1,28 @@
 <script setup lang="ts">
 const { session } = useAuth()
 const links = [
-  { name: "Accueil", href: "/", icon: "material-symbols:other-houses" },
-  { name: "profile", href: "/profile", icon: "mdi:account-tie-voice-outline" },
-  { name: "Messages", href: "/Messages", icon: "ic:baseline-message" },
-  { name: "Dashboard", href: "/dashboard", icon: "ic:round-dashboard-customize" },
+  {
+    name: "Accueil",
+    href: "/",
+    icon: "material-symbols:home-and-garden-outline-rounded",
+  },
+  { name: "profile", href: "/profile", icon: "material-symbols:account-circle-full" },
+  {
+    name: "Ajouter un post",
+    href: "/posts/new",
+    icon: "material-symbols:add-box-outline",
+  },
+  { name: "Posts", href: "/posts", icon: "ic:outline-post-add" },
+  {
+    name: "Messages",
+    href: "/Messages",
+    icon: "material-symbols:android-messages-outline",
+  },
+  {
+    name: "Dashboard",
+    href: "/dashboard",
+    icon: "material-symbols:dashboard-customize-outline",
+  },
 ]
 </script>
 <template>

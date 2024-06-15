@@ -64,8 +64,8 @@ export const authOptions: AuthConfig = {
         return {
           id: user.id,
           email: user.email,
-          firstName: user.firstname,
-          lastName: user.lastname,
+          firstname: user.firstname,
+          lastname: user.lastname,
           avatar: user.avatar,
           role: roleNames,
         }
@@ -92,6 +92,7 @@ export const authOptions: AuthConfig = {
     session: async ({ session, token }) => {
       session.user = session.user || {
         id: "",
+        email: "",
         firstname: "",
         lastname: "",
         avatar: "",
