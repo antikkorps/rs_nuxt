@@ -5,6 +5,7 @@ declare module "@auth/core/types" {
   interface User {
     id: string
     firstname: string
+    pseudo: string;
     lastname: string
     avatar: string
     role: string

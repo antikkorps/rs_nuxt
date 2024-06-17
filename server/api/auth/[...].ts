@@ -64,6 +64,7 @@ export const authOptions: AuthConfig = {
         return {
           id: user.id,
           email: user.email,
+          pseudo: user.pseudo,
           firstname: user.firstname,
           lastname: user.lastname,
           avatar: user.avatar,
@@ -82,6 +83,7 @@ export const authOptions: AuthConfig = {
       if (user) {
         token.id = user.id
         token.email = user.email
+        token.pseudo = user.pseudo
         token.firstname = user.firstname
         token.lastname = user.lastname
         token.avatar = user.avatar
@@ -94,12 +96,14 @@ export const authOptions: AuthConfig = {
         id: "",
         email: "",
         firstname: "",
+        pseudo: "",
         lastname: "",
         avatar: "",
         role: "",
       }
       session.user.id = token.id as string
       session.user.email = token.email as string
+      session.user.pseudo = token.pseudo as string
       session.user.firstname = token.firstname as string
       session.user.lastname = token.lastname as string
       session.user.avatar = token.avatar as string
