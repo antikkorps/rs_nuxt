@@ -1,12 +1,14 @@
 <script setup lang="ts">
 import { postServices } from "~/services"
-const posts = ref([])
+import type { ExtendedPost } from "~/types/posts";
+const posts = ref([]) as unknown as Ref<ExtendedPost[]>
 
 onMounted(async () => {
   const response = await postServices.getAllPosts()
   posts.value = response.posts
 
   console.log("here are the posts", posts)
+
 })
 </script>
 <template>

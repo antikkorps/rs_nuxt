@@ -6,7 +6,7 @@
       v-model="state.description"
       placeholder="Write a comment"
     />
-    <span class="flex absolute right-3 top-2/4 -mt-3 items-center">
+    <span class=" cursor-pointer flex absolute right-3 top-2/4 -mt-3 items-center">
       <svg
         @click="onSubmit"
         class="fill-blue-500 dark:fill-neutral-50"
@@ -43,13 +43,20 @@ const props = defineProps({
 interface State {
   description: string;
 }
+
+const postStore = usePostStore();
+const toast = useToast();
+
+const { session } = useAuth();
+const user = session.value?.user;
+
 const state: State = reactive({
   description: "",
   postId: props.postId,
   parentId: props.parentId ?? null,
 });
+
 const errors: ErrorMap<State> = reactive({});
-const toast = useToast();
 
 const onSubmit = async () => {
   if (!props.userId) {
@@ -73,7 +80,20 @@ const onSubmit = async () => {
 
   try {
     errors.description = "";
-    await commentServices.createComment<State>(validateData.data);
+    const newComment = await commentServices.createComment<State>(
+      validateData.data
+    );
+    postStore.addCommentToPost(props.postId, {
+      ...newComment,
+      user: user,
+      commentLikes: 0,
+      parentId: null,
+      childCommentCount: 0,
+      createdAt: new Date(newComment.createdAt),
+      updatedAt: new Date(newComment.updatedAt),
+    });
+
+    state.description = "";
   } catch (error) {
     // console.log("error", error);
   }
