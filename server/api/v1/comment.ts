@@ -6,7 +6,57 @@ import { createCommentSchema } from "~/schemas/comment-schema";
 const prisma = new PrismaClient();
 
 export default defineEventHandler(async (event) => {
+  const query = getQuery(event);
   const session = await getServerSession(event, authOptions);
+  let user = null;
+  if (session && session.user) {
+    user = session.user;
+  }
+
+  if (event.method === "GET") {
+    const { postId } = query;
+    if (!postId) {
+      return { statusCode: 400, body: "postId is required" };
+    }
+
+    if (postId) {
+      const commentsWithLikes = await prisma.comment.findMany({
+        where: {
+          postId: Number(postId),
+          parentId: null, 
+        },
+        orderBy: {
+          createdAt: "desc",
+        },
+        include: {
+          user: {
+            select: {
+              pseudo: true,
+              avatar: true,
+              firstname: true,
+              lastname: true,
+            },
+          },
+          _count: {
+            select: {
+              children: true,
+            },
+          },
+          commentLikes: user
+            ? {
+                where: {
+                  userId: user.id,
+                },
+                select: {
+                  id: true,
+                },
+              }
+            : false,
+        },
+      });
+      return commentsWithLikes;
+    }
+  }
 
   if (event.method == "POST") {
     const body = await readBody(event);

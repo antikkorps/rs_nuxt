@@ -33,10 +33,8 @@ const isLiked =  props.comment.commentLikes && props.comment.commentLikes.length
       >
         Répondre
       </button>
-      <span class="text-xs flex items-center gap-1">
-        <Icon name="uim:comment" class="w-6 h-6" />
-        {{ comment.childCommentCount }}</span
-      >
+     
+      <UiCommentBtn :count="comment.childCommentCount ?? 0" />
     </div>
   </div>
 </template>

@@ -6,7 +6,9 @@ const prisma = new PrismaClient();
 
 export default defineEventHandler(async (event) => {
   const session = await getServerSession(event, authOptions);
+  
 
+  
   try {
     let posts = [];
 
