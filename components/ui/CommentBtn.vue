@@ -1,5 +1,5 @@
 <template>
-  <span class="text-xs flex items-center gap-1">
+  <span class="text-lg flex items-center gap-1">
     <Icon name="uim:comment" class="w-6 h-6" />
     {{ count }}</span
   >
@@ -12,5 +12,5 @@ const props = defineProps({
     default: 0,
     required: true,
   },
-});
+})
 </script>
