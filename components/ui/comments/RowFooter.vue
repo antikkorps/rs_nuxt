@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import type { CommentFormatedWithCommentLikes } from '~/types/types';
-
+import type { CommentFormatedWithCommentLikes } from "~/types/types"
 
 const props = defineProps({
   comment: {
@@ -11,30 +10,34 @@ const props = defineProps({
     type: String as PropType<String | null>,
     default: null,
     required: false,
-  }
-});
+  },
+})
 // const comment = props.comment;
 
-const isLiked =  props.comment.commentLikes && props.comment.commentLikes.length > 0 ? true : false;
-
+const isLiked =
+  props.comment.commentLikes && props.comment.commentLikes.length > 0 ? true : false
 </script>
 
 <template>
   <div class="flex items-center">
-    <div class="inline-flex items-center py-2 mr-3">
-      <UiLikeBtn likeType='COMMENT' :likedItemId="comment.id" :userId="userId" :isLiked="isLiked"  />
+    <div class="inline-flex items-center py-2 mr-1">
+      <UiLikeBtn
+        likeType="COMMENT"
+        :likedItemId="comment.id"
+        :userId="userId"
+        :isLiked="isLiked"
+      />
 
       <span class="text-base font-bold">2</span>
     </div>
     <UiEmojiPicker />
     <div class="flex items-center">
+      <UiCommentBtn :count="comment.childCommentCount ?? 0" />
       <button
-        class="py-2 px-4 font-medium hover:bg-neutral-50 dark:hover:bg-neutral-700 rounded-lg"
+        class="mx-2 py-2 px-4 font-medium hover:bg-neutral-50 dark:hover:bg-neutral-700 rounded-lg"
       >
         Répondre
       </button>
-     
-      <UiCommentBtn :count="comment.childCommentCount ?? 0" />
     </div>
   </div>
 </template>

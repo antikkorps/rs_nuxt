@@ -2,8 +2,8 @@
 definePageMeta({ middleware: "auth", auth: { guestRedirectTo: "/auth/login" } })
 </script>
 <template>
-  <div class="w-4/5">
+  <div class="w-full">
     <UiProfileCard />
-    <UiGlobalUserGallery />
+    <UiProfileTabsNavigation />
   </div>
 </template>

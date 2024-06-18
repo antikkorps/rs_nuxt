@@ -4,9 +4,9 @@
       class="pt-2 pb-2 pl-3 w-full h-11 bg-neutral-100 dark:bg-neutral-600 rounded-lg placeholder:text-neutral-600 dark:placeholder:text-neutral-300 font-medium pr-20"
       type="text"
       v-model="state.description"
-      placeholder="Write a comment"
+      placeholder="Ajouter un commentaire"
     />
-    <span class=" cursor-pointer flex absolute right-3 top-2/4 -mt-3 items-center">
+    <span class="cursor-pointer flex absolute right-3 top-2/4 -mt-3 items-center">
       <svg
         @click="onSubmit"
         class="fill-blue-500 dark:fill-neutral-50"
@@ -21,9 +21,9 @@
 </template>
 
 <script setup lang="ts">
-import { createCommentSchema } from "~/schemas/comment-schema";
-import { commentServices } from "~/services";
-import type { ErrorMap } from "~/types/errors";
+import { createCommentSchema } from "~/schemas/comment-schema"
+import { commentServices } from "~/services"
+import type { ErrorMap } from "~/types/errors"
 
 const props = defineProps({
   postId: {
@@ -38,25 +38,25 @@ const props = defineProps({
     type: Number,
     required: false,
   },
-});
+})
 
 interface State {
-  description: string;
+  description: string
 }
 
-const postStore = usePostStore();
-const toast = useToast();
+const postStore = usePostStore()
+const toast = useToast()
 
-const { session } = useAuth();
-const user = session.value?.user;
+const { session } = useAuth()
+const user = session.value?.user
 
 const state: State = reactive({
   description: "",
   postId: props.postId,
   parentId: props.parentId ?? null,
-});
+})
 
-const errors: ErrorMap<State> = reactive({});
+const errors: ErrorMap<State> = reactive({})
 
 const onSubmit = async () => {
   if (!props.userId) {
@@ -64,25 +64,23 @@ const onSubmit = async () => {
       title: "Vous devez être connecté !",
       icon: "i-heroicons-information-circle",
       color: "red",
-    });
-    return;
+    })
+    return
   }
-  errors.description = "";
+  errors.description = ""
 
-  const validateData = createCommentSchema.safeParse(state);
+  const validateData = createCommentSchema.safeParse(state)
   if (!validateData.success) {
     handleZodErrors({
       errorResponse: validateData.error.errors,
       errorObject: errors,
-    });
-    return;
+    })
+    return
   }
 
   try {
-    errors.description = "";
-    const newComment = await commentServices.createComment<State>(
-      validateData.data
-    );
+    errors.description = ""
+    const newComment = await commentServices.createComment<State>(validateData.data)
     postStore.addCommentToPost(props.postId, {
       ...newComment,
       user: user,
@@ -91,11 +89,11 @@ const onSubmit = async () => {
       childCommentCount: 0,
       createdAt: new Date(newComment.createdAt),
       updatedAt: new Date(newComment.updatedAt),
-    });
+    })
 
-    state.description = "";
+    state.description = ""
   } catch (error) {
     // console.log("error", error);
   }
-};
+}
 </script>
