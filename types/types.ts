@@ -12,3 +12,4 @@ export type CommentFormatedWithCommentLikes = Comment & {
   childCommentCount: number | null;
   user: User;
 }
+

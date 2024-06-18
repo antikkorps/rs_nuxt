@@ -1,17 +1,29 @@
 <script setup lang="ts">
-import type { PostWithBoolean } from '~/server/api/v1/posts';
+import type { ExtendedPost } from '~/types/posts';
 import type { CommentFormatedWithCommentLikes } from '~/types/types';
 
 const props = defineProps({
   post: {
-    type: Object as PropType<PostWithBoolean>,
+    type: Object as PropType<ExtendedPost>,
     required: true,
   },
 })
 
 const { session } = useAuth()
+const postStore = usePostStore()
+
 const user = session.value?.user
 const comments = ref(props.post.comments) as unknown as Ref<CommentFormatedWithCommentLikes[]>
+
+
+
+const commentsFromStore = computed(() => postStore.getCommentsForPost(props.post.id))  as unknown as Ref<CommentFormatedWithCommentLikes[]>
+onMounted(() => {
+  if (props.post) {
+    const postForStore = props.post
+    postStore.addPost(postForStore)
+  }
+})
 </script>
 
 <template>
@@ -60,7 +72,7 @@ const comments = ref(props.post.comments) as unknown as Ref<CommentFormatedWithC
     <div class="flex justify-between">
       <div class="py-2 flex flex-row items-center">
         <div class="inline-flex items-center" href="#">
-          <UiLikeBtn :likedItemId="post.id" likeType='POST' :userId="user?.id" :isLiked="post.isLiked" />
+          <UiLikeBtn :likedItemId="post.id" likeType='POST' :userId="user?.id" :isLiked="post.postLikes && post.postLikes.length > 0" />
 
           <span class="text-lg font-bold">68</span>
         </div>
@@ -68,13 +80,16 @@ const comments = ref(props.post.comments) as unknown as Ref<CommentFormatedWithC
       </div>
       <div class="flex items-center">
         <UiShareBtn />
-        <UiBookmarkBtn :userId="user?.id" :postId="post.id" :isBookmarked="post.isBookmarked" />
+        <UiBookmarkBtn :userId="user?.id" :postId="post.id" :isBookmarked="post.bookmarkedPosts && post.bookmarkedPosts.length > 0" />
       </div>
     </div>
 
     <UiCommentsCreate :postId="post.id" :userId="user?.id"/>
     <!-- Comments content -->
     <div class="pt-6">
+      
+      <UiCommentsRow v-for="(comment, index) in commentsFromStore" :key="comment.id" :comment="comment" :userId="user?.id" />
+------ SEPARATION ENTRE LES DEUX TYPES DE COMMENTAIRES EN HAUT LE STORE EN BAS LES TRADI ------
       <UiCommentsRow v-for="(comment, index) in comments" :key="index" :comment="comment" :userId="user?.id" />
       <!-- More comments -->
       <div class="w-full">
