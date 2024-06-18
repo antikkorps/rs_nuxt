@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import GlobalUserGallery from "./GlobalUserGallery.vue"
 
-const selectedTab = ref<string>("Galerie")
+const selectedTab = ref<number>(0)
 
 const items = [
   {
     label: "Galerie",
-    icon: "ri:gallery-view-2",
+    icon: "solar:gallery-wide-outline",
     content: "Galerie de l'utilisateur",
   },
   {
@@ -21,15 +21,15 @@ const items = [
   },
 ]
 
-function updateSelectedTab(tabLabel: string) {
+function updateSelectedTab(tabLabel: number) {
   console.log(tabLabel)
-  selectedTab.value = items.label
+  selectedTab.value = tabLabel
 }
 </script>
 
 <template>
-  <UTabs :items="items" class="w-full" @update:selectedTab="updateSelectedTab">
-    <template #default="{ item }">
+  <UTabs :items="items" class="w-full" @change="updateSelectedTab">
+    <template #default="{ item, selected }">
       <div class="flex items-center gap-2 relative truncate">
         <UiIcon :name="item.icon" class="w-8 h-8 flex-shrink-0" />
 
@@ -37,5 +37,5 @@ function updateSelectedTab(tabLabel: string) {
       </div>
     </template>
   </UTabs>
-  <GlobalUserGallery v-if="selectedTab === 'Galerie'" />
+  <GlobalUserGallery v-if="selectedTab === 0" />
 </template>
