@@ -1,6 +1,8 @@
 <template>
-  <span class="text-lg flex items-center gap-1">
-    <Icon name="uim:comment" class="w-6 h-6" />
+  <span
+    class="text-lg font-bold flex items-center gap-1 text-neutral-500 dark:text-neutral-200"
+  >
+    <Icon name="iconamoon:comment-bold" class="w-6 h-6" />
     {{ count }}</span
   >
 </template>
