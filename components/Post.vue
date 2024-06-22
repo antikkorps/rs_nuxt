@@ -10,12 +10,15 @@ const props = defineProps({
 
   comments: {
     type: Array as PropType<CommentFormatedWithCommentLikes[]>,
-    required: false,}
+    required: false,
+  },
+
+  type: {
+    type: String,
+    required: false,
+    default: "index",
+  }
 });
-
-
-
-
 </script>
 
 <template>
@@ -25,7 +28,7 @@ const props = defineProps({
     </template>
 
     <template #comment>
-      <UiPostComment :post="post"  :comments="comments"/>
+      <UiPostComment :post="post" :comments="comments" :type="type" />
     </template>
   </UiPostCard>
 </template>
