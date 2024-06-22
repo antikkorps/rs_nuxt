@@ -3,19 +3,33 @@ import type { ExtendedPost } from "~/types/posts";
 import { commentServices, postServices } from "~/services";
 import type { CommentFormatedWithCommentLikes } from "~/types/types";
 const route = useRoute();
-
-console.log(route.params.id);
+const postStore = usePostStore();
 
 const post = ref() as unknown as Ref<ExtendedPost | null>;
 const comments = ref([]) as Ref<CommentFormatedWithCommentLikes[] | undefined>;
-onMounted(async () => {
-  const response = await postServices.getPostById(parseInt(route.params.id[0]));
-  post.value = response;
 
-  const commentResponse = await commentServices.getCommentsByPostId(parseInt(route.params.id[0]));
-  console.log(commentResponse);
-  comments.value = commentResponse;
-});
+const refreshComments = async () => {
+  const postId = parseInt(route.params.id[0])
+  const commentResponse = await commentServices.getCommentsByPostId(postId)
+  comments.value = commentResponse
+}
+onMounted(async () => {
+  const postId = parseInt(route.params.id[0])
+  const response = await postServices.getPostById(postId)
+  post.value = response
+
+  await refreshComments()
+})
+
+watch(
+  () => postStore.hasNewComment,
+  async (newVal) => {
+    if (newVal) {
+      await refreshComments()
+      postStore.resetNewCommentFlag()
+    }
+  }
+)
 </script>
 
 <template>
@@ -26,6 +40,6 @@ onMounted(async () => {
         <span>Retour aux posts </span></UButton
       >
     </div>
-    <Post v-if="post" :post="post" :comments="comments" />
+    <Post v-if="post" :post="post" :comments="comments" type="show" />
   </div>
 </template>

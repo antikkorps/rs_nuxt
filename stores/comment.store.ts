@@ -4,6 +4,7 @@ import type { CommentFormatedWithCommentLikes } from '~/types/types'
 export const usePostStore = defineStore('postStore', {
   state: () => ({
     posts: [] as ExtendedPost[],
+    hasNewComment: false as boolean,
   }),
   actions: {
     addPost(post: ExtendedPost) {
@@ -16,6 +17,7 @@ export const usePostStore = defineStore('postStore', {
           post.comments = []
         }
         post.comments.push(comment)
+        this.hasNewComment = true
       }
     },
     getCommentsForPost(postId: number) {
@@ -24,6 +26,9 @@ export const usePostStore = defineStore('postStore', {
         return post.comments.slice().sort((a, b) => new Date(b.id).getTime() - new Date(a.id).getTime())
       }
       return []
+    },
+    resetNewCommentFlag() {
+      this.hasNewComment = false // Réinitialise la propriété
     }
   }
 })
