@@ -14,47 +14,93 @@ export default defineEventHandler(async (event) => {
   }
 
   if (event.method === "GET") {
-    const { postId } = query;
-    if (!postId) {
-      return { statusCode: 400, body: "postId is required" };
+    if (query.postId) {
+      const { postId } = query;
+      if (!postId) {
+        return { statusCode: 400, body: "postId is required" };
+      }
+
+      if (postId) {
+        const commentsWithLikes = await prisma.comment.findMany({
+          where: {
+            postId: Number(postId),
+            parentId: null,
+          },
+          orderBy: {
+            createdAt: "desc",
+          },
+          include: {
+            user: {
+              select: {
+                pseudo: true,
+                avatar: true,
+                firstname: true,
+                lastname: true,
+              },
+            },
+            _count: {
+              select: {
+                children: true,
+              },
+            },
+            commentLikes: user
+              ? {
+                  where: {
+                    userId: user.id,
+                  },
+                  select: {
+                    id: true,
+                  },
+                }
+              : false,
+          },
+        });
+        return commentsWithLikes;
+      }
     }
 
-    if (postId) {
-      const commentsWithLikes = await prisma.comment.findMany({
-        where: {
-          postId: Number(postId),
-          parentId: null, 
-        },
-        orderBy: {
-          createdAt: "desc",
-        },
-        include: {
-          user: {
-            select: {
-              pseudo: true,
-              avatar: true,
-              firstname: true,
-              lastname: true,
-            },
+    if(query.commentId) {
+      const { commentId } = query;
+      if (!commentId) {
+        return { statusCode: 400, body: "commentId is required" };
+      }
+      if (commentId) {
+        const commentsWithLikes = await prisma.comment.findMany({
+          where: {
+            parentId: Number(commentId),
           },
-          _count: {
-            select: {
-              children: true,
-            },
+          take: 10,
+          orderBy: {
+            createdAt: "desc",
           },
-          commentLikes: user
-            ? {
-                where: {
-                  userId: user.id,
-                },
-                select: {
-                  id: true,
-                },
-              }
-            : false,
-        },
-      });
-      return commentsWithLikes;
+          include: {
+            user: {
+              select: {
+                pseudo: true,
+                avatar: true,
+                firstname: true,
+                lastname: true,
+              },
+            },
+            _count: {
+              select: {
+                children: true,
+              },
+            },
+            commentLikes: user
+              ? {
+                  where: {
+                    userId: user.id,
+                  },
+                  select: {
+                    id: true,
+                  },
+                }
+              : false,
+          },
+        });
+        return commentsWithLikes;
+      }
     }
   }
 

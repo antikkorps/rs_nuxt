@@ -15,8 +15,7 @@ const props = defineProps({
     type: String,
     required: false,
     default: "index",
-  }
-
+  },
 });
 
 const { session } = useAuth();
@@ -24,15 +23,13 @@ const postStore = usePostStore();
 
 const user = session.value?.user;
 
-
 const commentsFromStore = computed(() =>
   postStore.getCommentsForPost(props.post.id)
 );
 onMounted(() => {
   const postForStore = props.post;
-  
-  if (props.post && props.type === "index") {
 
+  if (props.post && props.type === "index") {
     postStore.addPost(postForStore);
   }
 });
@@ -48,24 +45,26 @@ const moreCommentBtn = props.type === "index" ? `/posts/${props.post.id}` : "";
       :key="comment.id"
       :comment="comment"
       :userId="user?.id"
+      :post="post"
       v-if="type === 'index'"
     />
 
     <UiCommentsRow
       v-for="(comment, index) in comments"
       :key="index"
+      :post="post"
       :comment="comment"
       :userId="user?.id"
       v-else
     />
     <!-- More comments -->
     <div class="w-full">
-      <nuxt-link 
-      class="py-3 px-4 w-full block bg-neutral-100 dark:bg-neutral-700 text-center rounded-lg font-medium hover:bg-neutral-200 dark:hover:bg-neutral-600 transition ease-in-out delay-75"
-      :to="moreCommentBtn">
+      <nuxt-link
+        class="py-3 px-4 w-full block bg-neutral-100 dark:bg-neutral-700 text-center rounded-lg font-medium hover:bg-neutral-200 dark:hover:bg-neutral-600 transition ease-in-out delay-75"
+        :to="moreCommentBtn"
+      >
         Plus de commentaires
       </nuxt-link>
-
     </div>
     <!-- End More comments -->
   </div>

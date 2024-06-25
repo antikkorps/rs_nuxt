@@ -4,7 +4,7 @@
       class="pt-2 pb-2 pl-3 w-full h-11 bg-neutral-100 dark:bg-neutral-600 rounded-lg placeholder:text-neutral-600 dark:placeholder:text-neutral-300 font-medium pr-20"
       type="text"
       v-model="state.description"
-      placeholder="Ajouter un commentaire"
+      :placeholder="buttonText"
       @keyup.enter="onSubmit"
     />
     <span class="cursor-pointer flex absolute right-3 top-2/4 -mt-3 items-center">
@@ -32,8 +32,10 @@ const props = defineProps({
     required: true,
   },
   userId: {
-    type: String,
+    type: String as PropType<String | null>,
+    default: null,
     required: false,
+
   },
   parentId: {
     type: Number,
@@ -43,6 +45,11 @@ const props = defineProps({
     type: String,
     required: false,
     default: "index",
+  },
+  buttonText: {
+    type: String,
+    required: false,
+    default: "Ajouter un commentaire",
   },
 })
 
@@ -65,6 +72,7 @@ const state: State = reactive({
 const errors: ErrorMap<State> = reactive({})
 
 const onSubmit = async () => {
+
   if (!props.userId) {
     toast.add({
       title: "Vous devez être connecté !",
@@ -93,7 +101,9 @@ const onSubmit = async () => {
         user: user,
         commentLikes: 0,
         parentId: null,
-        childCommentCount: 0,
+        _count: {
+          children: 0,
+        },
         createdAt: new Date(newComment.createdAt),
         updatedAt: new Date(newComment.updatedAt),
       })
