@@ -8,28 +8,40 @@ const postStore = usePostStore()
 const post = ref() as unknown as Ref<ExtendedPost | null>
 const comments = ref([]) as Ref<CommentFormatedWithCommentLikes[] | undefined>
 
-const refreshComments = async () => {
-  const postId = parseInt(route.params.id[0])
-  const commentResponse = await commentServices.getCommentsByPostId(postId)
-  comments.value = commentResponse
-}
-onMounted(async () => {
+const refreshPost = async () => {
   const postId = parseInt(route.params.id[0])
   const response = await postServices.getPostById(postId)
   post.value = response
 
-  await refreshComments()
+  const commentResponse = await commentServices.getCommentsByPostId(postId)
+  comments.value = commentResponse
+
+}
+
+// const refreshComments = async () => {
+//   const postId = parseInt(route.params.id[0])
+//   const commentResponse = await commentServices.getCommentsByPostId(postId)
+//   comments.value = commentResponse
+// }
+onMounted(async () => {
+  const postId = parseInt(route.params.id[0])
+  const response = await postServices.getPostById(postId)
+  post.value = response
+  await refreshPost()
+  // await refreshComments()
 })
 
 watch(
   () => postStore.hasNewComment,
   async (newVal) => {
     if (newVal) {
-      await refreshComments()
+      await refreshPost()
+      // await refreshComments()
       postStore.resetNewCommentFlag()
     }
   }
 )
+
 </script>
 
 <template>

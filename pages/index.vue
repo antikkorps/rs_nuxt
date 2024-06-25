@@ -9,6 +9,8 @@ onMounted(async () => {
   posts.value = response.posts;
 
 });
+
+
 </script>
 <template>
   <div class="flex flex-col justify-center mx-auto w-full gap-3">
