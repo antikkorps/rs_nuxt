@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { commentServices } from "~/services";
-import type { ExtendedPost } from "~/types/posts";
-import type { CommentFormatedWithCommentLikes } from "~/types/types";
+import { commentServices } from "~/services"
+import type { ExtendedPost } from "~/types/posts"
+import type { CommentFormatedWithCommentLikes } from "~/types/types"
 
 const props = defineProps({
   comment: {
@@ -17,40 +17,33 @@ const props = defineProps({
     type: Object as PropType<ExtendedPost>,
     required: true,
   },
-});
-
+})
 
 const isLiked =
-  props.comment.commentLikes && props.comment.commentLikes.length > 0
-    ? true
-    : false;
+  props.comment.commentLikes && props.comment.commentLikes.length > 0 ? true : false
 
-
-const comments = ref([]);
+const comments = ref([])
 
 const fetchComments = async (commentId: number) => {
-  isLoading.value = true;
-  const response = await commentServices.getChildrenByCommentId(commentId);
-  comments.value = response;
-  console.log(response);
-  isLoading.value = false;
-};
-
-
-
+  isLoading.value = true
+  const response = await commentServices.getChildrenByCommentId(commentId)
+  comments.value = response
+  console.log(response)
+  isLoading.value = false
+}
 
 // All the modal stuff, to probably put in another component
-const isOpen = ref(false);
-const isLoading = ref(false);
+const isOpen = ref(false)
+const isLoading = ref(false)
 watch(isOpen, async (newValue) => {
   if (newValue) {
-    await fetchComments(props.comment.id);
+    await fetchComments(props.comment.id)
   }
-});
+})
 
 const openModal = async () => {
-  isOpen.value = true;
-};
+  isOpen.value = true
+}
 const postStore = usePostStore()
 watch(
   () => postStore.hasNewComment,
@@ -91,10 +84,15 @@ watch(
     <!-- ALL the modal stuff, maybe to put in another component -->
     <UModal v-model="isOpen">
       <div class="p-4">
+        <button @click="isOpen = false" class="w-full flex justify-end p-4">
+          <Icon
+            name="material-symbols:cancel-outline-rounded"
+            class="w-10 h-10 hover:dark:text-neutral-100 dark:text-neutral-300 hover:text-neutral-500 text-neutral-600"
+          />
+        </button>
         <div class="max-h-[60vh] overflow-y-auto mb-5">
           <UiLoader v-if="isLoading" />
           <div v-else>
-            
             <UiCommentsRow
               v-for="(comment, index) in comments"
               :key="index"
@@ -102,7 +100,6 @@ watch(
               :comment="comment"
               :userId="userId"
             />
-          
           </div>
         </div>
         <UiCommentsCreate
