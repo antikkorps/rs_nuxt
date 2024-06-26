@@ -12,7 +12,7 @@
       <p class="mt-3">
         {{ comment.description }}
       </p>
-      <UiCommentsRowFooter :comment="comment" :userId="userId" />
+      <UiCommentsRowFooter :comment="comment" :userId="userId" :post="post" />
     </div>
   </div>
 
@@ -54,6 +54,7 @@
 </template>
 
 <script setup lang="ts">
+import type { ExtendedPost } from '~/types/posts';
 import type { CommentFormatedWithCommentLikes } from '~/types/types';
 
 
@@ -66,6 +67,10 @@ const props = defineProps({
     type: String as PropType<String | null>,
     default: null,
     required: false,
-  }
+  },
+  post: {
+    type: Object as PropType<ExtendedPost>,
+    required: true,
+  },
 });
 </script>

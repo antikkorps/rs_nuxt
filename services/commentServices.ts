@@ -31,3 +31,15 @@ export const getCommentsByPostId = async (postId: number) => {
 
   return data;
 }
+
+export const getChildrenByCommentId = async (commentId: number) => {
+  const response = await fetch(`/api/v1/comment?commentId=${commentId}`);
+
+  if (!response.ok) {
+    throw new Error("Failed to get comments");
+  }
+
+  const data = await response.json();
+
+  return data;
+}
