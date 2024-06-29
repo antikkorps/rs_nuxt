@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { commentServices } from "~/services";
-import type { ExtendedPost } from "~/types/posts";
-import type { CommentFormatedWithCommentLikes } from "~/types/types";
+import { commentServices } from "~/services"
+import type { ExtendedPost } from "~/types/posts"
+import type { CommentFormatedWithCommentLikes } from "~/types/types"
 
 const props = defineProps({
   comment: {
@@ -24,12 +24,9 @@ const props = defineProps({
   },
 });
 
-
 // here logic for the footer of the row
 const isLiked =
-  props.comment.commentLikes && props.comment.commentLikes.length > 0
-    ? true
-    : false;
+  props.comment.commentLikes && props.comment.commentLikes.length > 0 ? true : false
 
 
 // the "répondre" button and differents behaviors if it's in the index or in the modal.
@@ -84,6 +81,7 @@ watch(modalSelectedComment, async (newComment) => {
 
 // when postStore hasNewComment (boolean) value change, we fetch again the comments of the selected comment.
 // then we reset the value of the boolean.
+
 watch(
   () => postStore.hasNewComment,
   async (newVal) => {
@@ -139,6 +137,12 @@ const backButton = () => {
     <!-- ALL the modal stuff, maybe to put in another component -->
     <UModal v-model="isOpen">
       <div>
+      <button @click="isOpen = false" class="w-full flex justify-end p-4">
+          <Icon
+            name="material-symbols:cancel-outline-rounded"
+            class="w-10 h-10 hover:dark:text-neutral-100 dark:text-neutral-300 hover:text-neutral-500 text-neutral-600"
+          />
+        </button>
         <div class="max-h-[60vh] overflow-y-auto mb-5">
          
           <div v-if="isLoading">
@@ -183,7 +187,6 @@ const backButton = () => {
               :parentId="modalSelectedComment?.id || comment.id"
             />
             </div>
-
           </div>
         </div>
       </div>

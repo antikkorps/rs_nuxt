@@ -1,18 +1,16 @@
 <script setup lang="ts">
-import type { ExtendedPost } from '~/types/posts';
+import type { ExtendedPost } from "~/types/posts"
 
 const props = defineProps({
   post: {
     type: Object as PropType<ExtendedPost>,
     required: true,
   },
-});
+})
 
-const { session } = useAuth();
+const { session } = useAuth()
 
-
-const user = session.value?.user;
-
+const user = session.value?.user
 </script>
 <template>
   <div class="flex pb-6 items-center justify-between">
@@ -25,23 +23,16 @@ const user = session.value?.user;
       </a>
       <div class="flex flex-col">
         <div class="flex items-center">
-          <a class="inline-block text-lg font-bold mr-2" href="#"
-            >Esther Howard</a
-          >
+          <a class="inline-block text-lg font-bold mr-2" href="#">Esther Howard</a>
           <span>
-            <svg
-              class="fill-blue-500 dark:fill-neutral-50 w-5 h-5"
-              viewBox="0 0 24 24"
-            >
+            <svg class="fill-blue-500 dark:fill-neutral-50 w-5 h-5" viewBox="0 0 24 24">
               <path
                 d="M10,17L5,12L6.41,10.58L10,14.17L17.59,6.58L19,8M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z"
               ></path>
             </svg>
           </span>
         </div>
-        <div class="text-neutral-500 dark:text-neutral-300">
-          January 22, 2021
-        </div>
+        <div class="text-neutral-500 dark:text-neutral-300">January 22, 2021</div>
       </div>
     </div>
     <UiMoreBtn />
