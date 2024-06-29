@@ -14,5 +14,6 @@ export type CommentFormatedWithCommentLikes = Comment & {
   _count: {
     children: number;
   }
+  parent: CommentFormatedWithCommentLikes | null;
 }
 

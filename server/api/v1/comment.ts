@@ -59,7 +59,7 @@ export default defineEventHandler(async (event) => {
       }
     }
 
-    if(query.commentId) {
+    if (query.commentId) {
       const { commentId } = query;
       if (!commentId) {
         return { statusCode: 400, body: "commentId is required" };
@@ -97,6 +97,34 @@ export default defineEventHandler(async (event) => {
                   },
                 }
               : false,
+
+            parent: {
+              include: {
+                user: {
+                  select: {
+                    pseudo: true,
+                    avatar: true,
+                    firstname: true,
+                    lastname: true,
+                  },
+                },
+                _count: {
+                  select: {
+                    children: true,
+                  },
+                },
+                commentLikes: user
+                ? {
+                    where: {
+                      userId: user.id,
+                    },
+                    select: {
+                      id: true,
+                    },
+                  }
+                : false,
+              },
+            },
           },
         });
         return commentsWithLikes;

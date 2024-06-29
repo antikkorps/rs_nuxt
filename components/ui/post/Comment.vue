@@ -46,15 +46,17 @@ const moreCommentBtn = props.type === "index" ? `/posts/${props.post.id}` : "";
       :comment="comment"
       :userId="user?.id"
       :post="post"
+      :type="type"
       v-if="type === 'index'"
     />
-
+    
     <UiCommentsRow
       v-for="(comment, index) in comments"
       :key="index"
       :post="post"
       :comment="comment"
       :userId="user?.id"
+      :type="type"
       v-else
     />
     <!-- More comments -->
