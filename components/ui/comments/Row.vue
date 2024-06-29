@@ -12,7 +12,7 @@
       <p class="mt-3">
         {{ comment.description }}
       </p>
-      <UiCommentsRowFooter :comment="comment" :userId="userId" :post="post" />
+      <UiCommentsRowFooter :comment="comment" :userId="userId" :post="post" :type="type" />
     </div>
   </div>
 
@@ -71,6 +71,11 @@ const props = defineProps({
   post: {
     type: Object as PropType<ExtendedPost>,
     required: true,
+  },
+  type: {
+    type: String,
+    required: false,
+    default: "index",
   },
 });
 </script>
