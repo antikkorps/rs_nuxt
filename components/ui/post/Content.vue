@@ -60,7 +60,7 @@ const user = session.value?.user
           :isLiked="post.postLikes && post.postLikes.length > 0"
         />
 
-        <span class="text-lg font-bold">68</span>
+        <span class="text-lg font-bold">{{ post.postLikes?.length }}</span>
       </div>
       <UiEmojiPicker />
 
