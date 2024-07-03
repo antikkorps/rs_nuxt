@@ -1,10 +1,9 @@
-
 export const likeUnlike = async ({
   likedItemId,
   likeType,
 }: {
-  likedItemId: number;
-  likeType: string;
+  likedItemId: number
+  likeType: string
 }) => {
   const response = await fetch("/api/v1/like", {
     method: "POST",
@@ -12,11 +11,23 @@ export const likeUnlike = async ({
       likedItemId,
       likeType,
     }),
-  });
+  })
 
   if (!response.ok) {
-    throw new Error("Failed to toggle like");
+    throw new Error("Failed to toggle like")
   }
-  const data = await response.json();
-  return data;
-};
+  const data = await response.json()
+  return data
+}
+
+export const getlikes = async ({}) => {
+  const response = await fetch("/api/v1/like", {
+    method: "GET",
+  })
+
+  if (!response.ok) {
+    throw new Error("Failed to get likes")
+  }
+  const data = await response.json()
+  return data
+}

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { ExtendedPost } from "~/types/posts"
+import { likeServices } from "@/services"
 
 const props = defineProps({
   post: {
@@ -11,6 +12,10 @@ const props = defineProps({
 const { session } = useAuth()
 
 const user = session.value?.user
+
+const fetchPostLikes = async () => {
+  console.log("mise à jour du like")
+}
 </script>
 <template>
   <div class="flex pb-6 items-center justify-between">
@@ -55,12 +60,13 @@ const user = session.value?.user
       <div class="inline-flex items-center" href="#">
         <UiLikeBtn
           :likedItemId="post.id"
+          @updateLikes="fetchPostLikes"
           likeType="POST"
           :userId="user?.id"
           :isLiked="post.postLikes && post.postLikes.length > 0"
         />
 
-        <span class="text-lg font-bold">{{ post.postLikes?.length }}</span>
+        <span class="text-lg font-bold">{{ post._count.postLikes }}</span>
       </div>
       <UiEmojiPicker />
 
