@@ -287,12 +287,24 @@ export default defineEventHandler(async (event) => {
       };
     }
 
+    let depth = 0;
+    if(parentId) {
+      const parentComment = await prisma.comment.findUnique({
+        where: {
+          id: parentId,
+        },
+      });
+      
+      depth = parentComment?.depth ?? 1; 
+    }
+
     const comment = await prisma.comment.create({
       data: {
         postId: postId,
         description: description,
         parentId: parentId ?? null,
         userId: session.user.id,
+        depth: depth + 1,
       },
     });
     return comment;

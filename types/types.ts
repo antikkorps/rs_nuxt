@@ -9,6 +9,7 @@ export type UserRegistration = {
 export type CommentFormatedWithCommentLikes = Comment & {
   commentLikes: {id: number}[];
   parentId: number | null;
+  depth: number;
   childCommentCount: number | null;
   user: User;
   _count: {

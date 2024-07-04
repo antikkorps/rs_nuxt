@@ -101,6 +101,7 @@ const onSubmit = async () => {
         user: user,
         commentLikes: 0,
         parentId: null,
+        depth: 1,
         _count: {
           children: 0,
         },
