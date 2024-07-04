@@ -60,11 +60,12 @@ export default defineEventHandler(async (event) => {
     }
 
     if (query.commentId) {
-      const { commentId } = query;
+      const { commentId, getChildren, page, limit, pagination } = query;
+
       if (!commentId) {
         return { statusCode: 400, body: "commentId is required" };
       }
-      if (commentId) {
+      if (commentId && getChildren && !pagination) {
         const commentsWithLikes = await prisma.comment.findMany({
           where: {
             parentId: Number(commentId),
@@ -114,20 +115,141 @@ export default defineEventHandler(async (event) => {
                   },
                 },
                 commentLikes: user
-                ? {
-                    where: {
-                      userId: user.id,
-                    },
-                    select: {
-                      id: true,
-                    },
-                  }
-                : false,
+                  ? {
+                      where: {
+                        userId: user.id,
+                      },
+                      select: {
+                        id: true,
+                      },
+                    }
+                  : false,
               },
             },
           },
         });
         return commentsWithLikes;
+      }
+
+      if (commentId && getChildren && pagination) {
+        
+        const skip = (Number(page) - 1) * Number(limit);
+        const commentsWithLikes = await prisma.comment.findMany({
+          where: {
+            parentId: Number(commentId),
+          },
+          skip: skip,
+          take: Number(limit),
+          orderBy: {
+            createdAt: "desc",
+          },
+          include: {
+            user: {
+              select: {
+                pseudo: true,
+                avatar: true,
+                firstname: true,
+                lastname: true,
+              },
+            },
+            _count: {
+              select: {
+                children: true,
+              },
+            },
+            commentLikes: user
+              ? {
+                  where: {
+                    userId: user.id,
+                  },
+                  select: {
+                    id: true,
+                  },
+                }
+              : false,
+            parent: {
+              include: {
+                user: {
+                  select: {
+                    pseudo: true,
+                    avatar: true,
+                    firstname: true,
+                    lastname: true,
+                  },
+                },
+                _count: {
+                  select: {
+                    children: true,
+                  },
+                },
+                commentLikes: user
+                  ? {
+                      where: {
+                        userId: user.id,
+                      },
+                      select: {
+                        id: true,
+                      },
+                    }
+                  : false,
+              },
+            },
+          },
+        });
+
+        const totalCount = await prisma.comment.count({
+          where: {
+            parentId: Number(commentId),
+          },
+        });
+
+        return {
+          comments: commentsWithLikes,
+          totalCount,
+          page: Number(page),
+          limit: Number(limit),
+        };
+      }
+      if (commentId && !getChildren) {
+
+        const comment = await prisma.comment.findUnique({
+          where: {
+            id: Number(commentId),
+          },
+          include: {
+            user: {
+              select: {
+                pseudo: true,
+                avatar: true,
+                firstname: true,
+                lastname: true,
+              },
+            },
+            _count: {
+              select: {
+                children: true,
+                commentLikes: true,
+              },
+            },
+            commentLikes: user
+              ? {
+                  where: {
+                    userId: user.id,
+                  },
+                  select: {
+                    id: true,
+                  },
+                }
+              : false,
+
+            parent: {
+              select: {
+                id: true
+              }
+            },
+          },
+        });
+        return comment;
       }
     }
   }
