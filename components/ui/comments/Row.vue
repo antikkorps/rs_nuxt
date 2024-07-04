@@ -1,5 +1,5 @@
 <template>
-  <div class="media flex pb-4">
+  <div class="media flex  pb-4">
 
     <a class="mr-4" href="#">
       <img
@@ -7,10 +7,10 @@
         :src="comment.user.avatar || 'https://randomuser.me/api/port'"
       />
     </a>
-    <div class="media-body">
+    <div class="media-body w-full">
       <UiCommentsRowHeader :comment="comment" />
       <p class="mt-3">
-        {{ comment.description }}
+       {{ comment.description }}
       </p>
       <UiCommentsRowFooter :comment="comment" :userId="userId" :post="post" :type="type" />
     </div>
