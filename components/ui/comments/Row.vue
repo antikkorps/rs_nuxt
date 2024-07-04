@@ -1,5 +1,5 @@
 <template>
-  <div class="media flex  pb-4">
+  <div class="media flex pb-4">
 
     <a class="mr-4" href="#">
       <img

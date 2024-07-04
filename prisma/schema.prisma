@@ -227,6 +227,8 @@ model Comment {
   children Comment[] @relation("ParentChild")
   parentId Int?
 
+  depth Int @default(1)
+
   commentLikes CommentLike[] @relation("commentLikes")
 
   createdAt DateTime @default(now())
