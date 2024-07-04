@@ -42,7 +42,11 @@ const loadResponse = async (commentId: number, reset: boolean = false) => {
 
   isLoading.value = true;
   try {
-    const response = await commentServices.getChildrenByCommentIdWithPagination(commentId, page.value, limit.value);
+    const response = await commentServices.getChildrenByCommentIdWithPagination(
+      commentId,
+      page.value,
+      limit.value
+    );
     childrens.value.push(...response.comments);
     totalCount.value = response.totalCount;
     page.value++;
@@ -81,15 +85,14 @@ const loadResponse = async (commentId: number, reset: boolean = false) => {
   </button>
 
   <div v-if="isLoading">LOADING ...</div>
-  <UiCommentsRow
+  <div
     v-else
     v-for="(childComment, index) in childrens"
     :key="index"
-    :post="post"
-    :comment="childComment"
-    :userId="userId"
-    type="modal"
-  />
+    class="border-l pl-2 dark:border-gray-600 border-gray-200 mb-1.5"
+  >
+    <UiCommentsRow :post="post" :comment="childComment" :userId="userId" />
+  </div>
 
   <button
     @click="loadResponse(comment.id)"

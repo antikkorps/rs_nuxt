@@ -51,7 +51,6 @@ const onClickButton = async ({
   if (props.type === "show" && comment) {
   }
 };
-
 </script>
 
 <template>
