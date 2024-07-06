@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import type { ExtendedPost } from "~/types/posts";
-import type { CommentFormatedWithCommentLikes } from "~/types/types";
+import type { ExtendedPost } from "~/types/posts"
+import type { CommentFormatedWithCommentLikes } from "~/types/types"
 
 const props = defineProps({
   comment: {
@@ -21,36 +21,34 @@ const props = defineProps({
     required: false,
     default: "index",
   },
-});
+})
 
 // here logic for the footer of the row
 const isLiked =
-  props.comment.commentLikes && props.comment.commentLikes.length > 0
-    ? true
-    : false;
+  props.comment.commentLikes && props.comment.commentLikes.length > 0 ? true : false
 
-const showCreateCommentInput = ref<{ [key: number]: boolean }>({});
+const showCreateCommentInput = ref<{ [key: number]: boolean }>({})
 
 function setCommentInputVisibility(id: number, isVisible: boolean) {
   if (showCreateCommentInput.value[id]) {
-    showCreateCommentInput.value[id] = false;
+    showCreateCommentInput.value[id] = false
   } else {
-    showCreateCommentInput.value[id] = true;
+    showCreateCommentInput.value[id] = true
   }
 }
 
 const onClickButton = async ({
   comment,
 }: {
-  comment?: CommentFormatedWithCommentLikes | null;
+  comment?: CommentFormatedWithCommentLikes | null
 }) => {
   if (props.type === "index") {
-    await navigateTo("/posts/" + props.post.id);
+    await navigateTo("/posts/" + props.post.id)
   }
 
   if (props.type === "show" && comment) {
   }
-};
+}
 </script>
 
 <template>
@@ -64,7 +62,7 @@ const onClickButton = async ({
           :isLiked="isLiked"
         />
 
-        <span class="text-base font-bold">2</span>
+        <span class="text-base font-bold">{{ comment.commentLikes.length }}</span>
       </div>
       <UiEmojiPicker />
       <div class="flex items-center">
