@@ -81,10 +81,15 @@ const fetchPostLikes = async () => {
       />
     </div>
   </div>
-  <div>
-    <p>
-      <span class="text-lg font-bold">{{ post._count.postLikes }}</span> personnes ont
-      aimé ce post
-    </p>
+  <div class="mb-4">
+    <span v-if="post._count.postLikes === 0" class="text-lg font-bold">
+      Ce post n'a pas encore été liké
+    </span>
+    <span v-else-if="post._count.postLikes === 1" class="text-lg font-bold">
+      1 personne aime ce post
+    </span>
+    <span v-else class="text-lg font-bold">
+      {{ post._count.postLikes }} personnes aiment ce post
+    </span>
   </div>
 </template>
