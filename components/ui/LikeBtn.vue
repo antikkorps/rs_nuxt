@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {likeServices} from "@/services"
+import { likeServices } from "@/services"
 
 const props = defineProps({
   likedItemId: {
@@ -18,21 +18,31 @@ const props = defineProps({
     type: String as PropType<String | null>,
     default: null,
     required: false,
-  }
-});
+  },
+})
 
-const toast = useToast();
+const emit = defineEmits(["updateLikes"])
 
-const liked = ref(props.isLiked);
+const toast = useToast()
+
+const liked = ref(props.isLiked)
 const toggleLike = async () => {
   if (props.userId) {
-  liked.value = !liked.value;
-  await likeServices.likeUnlike({likedItemId: props.likedItemId, likeType: props.likeType})
+    liked.value = !liked.value
+    await likeServices.likeUnlike({
+      likedItemId: props.likedItemId,
+      likeType: props.likeType,
+    })
+    emit("updateLikes")
   } else {
-    toast.add({ title: "Vous devez être connecté !", icon: "i-heroicons-information-circle", color: "red"});
-    return;
+    toast.add({
+      title: "Vous devez être connecté !",
+      icon: "i-heroicons-information-circle",
+      color: "red",
+    })
+    return
   }
-};
+}
 </script>
 <template>
   <div>
