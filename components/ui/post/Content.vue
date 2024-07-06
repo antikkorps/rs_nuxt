@@ -56,7 +56,7 @@ const fetchPostLikes = async () => {
     {{ post.description }}
   </p>
   <div class="flex justify-between">
-    <div class="py-2 flex flex-row items-center">
+    <div class="pt-2 flex flex-row items-center">
       <div class="inline-flex items-center" href="#">
         <UiLikeBtn
           :likedItemId="post.id"
