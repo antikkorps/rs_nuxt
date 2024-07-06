@@ -65,8 +65,6 @@ const fetchPostLikes = async () => {
           :userId="user?.id"
           :isLiked="post.postLikes && post.postLikes.length > 0"
         />
-
-        <span class="text-lg font-bold">{{ post._count.postLikes }}</span>
       </div>
       <UiEmojiPicker />
 
@@ -82,5 +80,11 @@ const fetchPostLikes = async () => {
         :isBookmarked="post.bookmarkedPosts && post.bookmarkedPosts.length > 0"
       />
     </div>
+  </div>
+  <div>
+    <p>
+      <span class="text-lg font-bold">{{ post._count.postLikes }}</span> personnes ont
+      aimé ce post
+    </p>
   </div>
 </template>

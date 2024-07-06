@@ -19,15 +19,3 @@ export const likeUnlike = async ({
   const data = await response.json()
   return data
 }
-
-export const getlikes = async ({}) => {
-  const response = await fetch("/api/v1/like", {
-    method: "GET",
-  })
-
-  if (!response.ok) {
-    throw new Error("Failed to get likes")
-  }
-  const data = await response.json()
-  return data
-}
