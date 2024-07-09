@@ -49,6 +49,11 @@ const onClickButton = async ({
   if (props.type === "show" && comment) {
   }
 }
+
+async function fetchUpdatedLikes() {
+  // fetch updated likes
+  console.log("fetch updated likes")
+}
 </script>
 
 <template>
@@ -60,6 +65,7 @@ const onClickButton = async ({
           :likedItemId="comment.id"
           :userId="userId"
           :isLiked="isLiked"
+          @update-likes="fetchUpdatedLikes"
         />
 
         <span class="text-base font-bold">{{ comment.commentLikes.length }}</span>
