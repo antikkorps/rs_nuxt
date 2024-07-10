@@ -46,6 +46,7 @@ export default defineEventHandler(async (event) => {
               _count: {
                 select: {
                   children: true,
+                  commentLikes: true,
                 }
               },
             },
@@ -103,6 +104,7 @@ export default defineEventHandler(async (event) => {
               _count: {
                 select: {
                   children: true,
+                  commentLikes: true,
                 }
               },
             },

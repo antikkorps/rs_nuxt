@@ -41,6 +41,7 @@ export default defineEventHandler(async (event) => {
             _count: {
               select: {
                 children: true,
+                commentLikes: true
               },
             },
             commentLikes: user
@@ -86,6 +87,7 @@ export default defineEventHandler(async (event) => {
             _count: {
               select: {
                 children: true,
+                commentLikes: true
               },
             },
             commentLikes: user
@@ -155,6 +157,7 @@ export default defineEventHandler(async (event) => {
             _count: {
               select: {
                 children: true,
+                commentLikes: true
               },
             },
             commentLikes: user
@@ -211,7 +214,6 @@ export default defineEventHandler(async (event) => {
         };
       }
       if (commentId && !getChildren) {
-
         const comment = await prisma.comment.findUnique({
           where: {
             id: Number(commentId),

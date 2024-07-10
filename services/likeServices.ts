@@ -19,3 +19,13 @@ export const likeUnlike = async ({
   const data = await response.json()
   return data
 }
+
+
+export const getItemCountLikes = async (likedItemId: number, likeType: string) => {
+  const response = await fetch(`/api/v1/like?count=true&likeType=${likeType}&likedItemId=${likedItemId}`)
+  if (!response.ok) {
+    throw new Error("Failed to fetch like count")
+  }
+  const data = await response.json()
+  return data
+}
