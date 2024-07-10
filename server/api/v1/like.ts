@@ -3,13 +3,11 @@ import { LikeType, likeSchema } from "~/schemas/like-schema";
 import { getServerSession } from "#auth";
 import { authOptions } from "../auth/[...]";
 
-
 const prisma = new PrismaClient();
-
-
 
 export default defineEventHandler(async (event) => {
   const session = await getServerSession(event, authOptions);
+  const query = getQuery(event);
 
   if (event.method == "POST") {
     const body = await readBody(event);
@@ -62,7 +60,7 @@ export default defineEventHandler(async (event) => {
         const like = await prisma.postLike.create({
           data: {
             postId: likedItemId,
-            userId: session.user.id
+            userId: session.user.id,
           },
         });
         return like;
@@ -81,7 +79,6 @@ export default defineEventHandler(async (event) => {
         };
       }
 
-      
       const existingLike = await prisma.commentLike.findUnique({
         where: {
           userId_commentId: {
@@ -101,7 +98,7 @@ export default defineEventHandler(async (event) => {
         const like = await prisma.commentLike.create({
           data: {
             commentId: likedItemId,
-            userId: session.user.id
+            userId: session.user.id,
           },
         });
         return like;
@@ -109,28 +106,57 @@ export default defineEventHandler(async (event) => {
     }
   }
 
+  const { count, likedItemId, likeType } = query;
+  
   if (event.method == "GET") {
-    if (!session || !session.user) {
-      return false;
-    }
-    const query = getQuery(event);
-    if (!query.likedItemId) {
-      return {
-        statusCode: 400,
-        body: "likedItemId is required",
-      };
-    }
-    const likedItemId = parseInt(query.likedItemId as string);
-    const existingLike = await prisma.postLike.findUnique({
-      where: {
-        userId_postId: {
-          userId: session.user.id,
-          postId: likedItemId,
-        },
-      },
-    });
+    if (count) {
+      if (!likedItemId) {
+        return {
+          statusCode: 400,
+          body: "likedItemId is required",
+        };
+      }
 
-    return !!existingLike;
+      let countLikes = 0;
+      if(likeType === LikeType.POST) {
+        countLikes = await prisma.postLike.count({
+          where: {
+            postId: parseInt(likedItemId as string),
+          },
+        });
+      }
+      if(likeType === LikeType.COMMENT) {
+        countLikes = await prisma.commentLike.count({
+          where: {
+            commentId: parseInt(likedItemId as string),
+          },
+        });
+      }
+      return countLikes;
+
+    } else {
+      // get post like for the auth user
+      if (!session || !session.user) {
+        return false;
+      }
+
+      if (!query.likedItemId) {
+        return {
+          statusCode: 400,
+          body: "likedItemId is required",
+        };
+      }
+      const likedItemId = parseInt(query.likedItemId as string);
+      const existingLike = await prisma.postLike.findUnique({
+        where: {
+          userId_postId: {
+            userId: session.user.id,
+            postId: likedItemId,
+          },
+        },
+      });
+
+      return !!existingLike;
+    }
   }
 });
-
