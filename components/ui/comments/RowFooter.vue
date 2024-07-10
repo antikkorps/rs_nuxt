@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { ExtendedPost } from "~/types/posts"
 import type { CommentFormatedWithCommentLikes } from "~/types/types"
+import { likeServices } from "@/services"
 
 const props = defineProps({
   comment: {
@@ -50,11 +51,24 @@ const onClickButton = async ({
   }
 }
 
+
 async function fetchUpdatedLikes() {
-  // fetch updated likes
-  console.log("fetch updated likes")
+  loadingCount.value = true;
+  fetchPostLikes()
+  loadingCount.value = false;
 }
+
+const likeCount = ref(null);
+const loadingCount = ref(false);
+const fetchPostLikes = async () => {
+  likeCount.value = await likeServices.getItemCountLikes(props.comment.id, "COMMENT");
+};
+onMounted(() => {
+  likeCount.value = props.comment._count.commentLikes ?? 0;
+});
+
 </script>
+
 
 <template>
   <div class="">
@@ -68,7 +82,8 @@ async function fetchUpdatedLikes() {
           @update-likes="fetchUpdatedLikes"
         />
 
-        <span class="text-base font-bold">{{ comment.commentLikes.length }}</span>
+        <span class="text-base font-bold" v-if="!loadingCount">{{ likeCount }}</span>
+        <div class="dark:bg-neutral-600 bg-gray-200 animate-pulse w-3 h-5 rounded" v-else />
       </div>
       <UiEmojiPicker />
       <div class="flex items-center">

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { likeServices } from "@/services"
+import { likeServices } from "@/services";
 
 const props = defineProps({
   likedItemId: {
@@ -19,33 +19,35 @@ const props = defineProps({
     default: null,
     required: false,
   },
-})
+});
 
-const emit = defineEmits(["updateLikes"])
+const emit = defineEmits(["updateLikes"]);
 
-const toast = useToast()
+const toast = useToast();
 
-const liked = ref(props.isLiked)
+const liked = ref(props.isLiked);
 const toggleLike = async () => {
   if (props.userId) {
-    liked.value = !liked.value
+    liked.value = !liked.value;
     await likeServices.likeUnlike({
       likedItemId: props.likedItemId,
       likeType: props.likeType,
-    })
-    emit("updateLikes")
+    });
+    emit("updateLikes");
   } else {
     toast.add({
       title: "Vous devez être connecté !",
       icon: "i-heroicons-information-circle",
       color: "red",
-    })
-    return
+    });
+    return;
   }
-}
+};
+
+
 </script>
 <template>
-  <div>
+  <div class="">
     <div class="my-2 mr-2 cursor-pointer">
       <Transition name="fade" mode="out-in">
         <Icon
