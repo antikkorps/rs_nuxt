@@ -9,17 +9,16 @@ const post = ref() as unknown as Ref<ExtendedPost | null>
 const comments = ref([]) as Ref<CommentFormatedWithCommentLikes[] | undefined>
 
 const refreshPost = async () => {
-  const postId = parseInt(route.params.id[0])
+  const postId = parseInt(route.params.id)
   const response = await postServices.getPostById(postId)
   post.value = response
 
   const commentResponse = await commentServices.getCommentsByPostId(postId)
   comments.value = commentResponse
-
 }
 
 // const refreshComments = async () => {
-//   const postId = parseInt(route.params.id[0])
+//   const postId = parseInt(route.params.id)
 //   const commentResponse = await commentServices.getCommentsByPostId(postId)
 //   comments.value = commentResponse
 // }
