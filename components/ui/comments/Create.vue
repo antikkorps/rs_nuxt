@@ -69,6 +69,8 @@ const state: State = reactive({
   parentId: props.parentId ?? null,
 })
 
+const emit = defineEmits(["addComment"]);
+
 const errors: ErrorMap<State> = reactive({})
 
 const onSubmit = async () => {
@@ -110,6 +112,8 @@ const onSubmit = async () => {
       })
     } else {
       postStore.hasNewComment = true
+      console.log('addComment')
+      emit("addComment");
     }
 
     state.description = ""

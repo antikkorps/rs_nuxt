@@ -36,14 +36,15 @@ const limit = ref(3);
 const totalCount = ref(0);
 
 
+const addComment = () => {
+  loadResponse(props.comment.id, true);
+}
+
 const loadResponse = async (commentId: number, reset: boolean = false) => {
   if (reset) {
     childrens.value = [];
     page.value = 1;
   }
-
-
-
   isLoading.value = true;
   try {
     const response = await commentServices.getChildrenByCommentIdWithPagination(
@@ -68,6 +69,7 @@ const loadResponse = async (commentId: number, reset: boolean = false) => {
       type="COMMENT"
       buttonText="Répondre"
       :parentId="comment.id"
+      @addComment="addComment"
     />
   </div>
 
@@ -80,7 +82,8 @@ const loadResponse = async (commentId: number, reset: boolean = false) => {
     <small>Voir les réponses</small>
   </button>
 
-  <div class="max-h-[500px] overflow-y-auto">
+  <div class="max-h-[500px] overflow-y-auto"
+  >
     <div v-if="isLoading">LOADING ...</div>
     <div
       v-else
