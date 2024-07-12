@@ -1,7 +1,7 @@
 import type { ExtendedPost } from "~/types/posts"
 
-export const getAllPosts = async () => {
-  const response = await fetch("/api/v1/posts")
+export const getAllPosts = async (page: number = 1, limit: number = 3) => {
+  const response = await fetch(`/api/v1/posts?page=${page}&limit=${limit}`)
   if (!response.ok) {
     throw new Error("Failed to fetch posts")
   }
