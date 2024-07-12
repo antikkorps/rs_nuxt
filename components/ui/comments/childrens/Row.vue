@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-import { commentServices } from "~/services";
-import type { ExtendedPost } from "~/types/posts";
-import type { CommentFormatedWithCommentLikes } from "~/types/types";
+import { ref } from "vue"
+import { commentServices } from "~/services"
+import type { ExtendedPost } from "~/types/posts"
+import type { CommentFormatedWithCommentLikes } from "~/types/types"
 
 const props = defineProps({
   comment: {
@@ -27,38 +27,37 @@ const props = defineProps({
     type: Object as PropType<{ [key: number]: boolean }>,
     required: true,
   },
-});
+})
 
-const childrens = ref<CommentFormatedWithCommentLikes[]>([]);
-const isLoading = ref(false);
-const page = ref(1);
-const limit = ref(3);
-const totalCount = ref(0);
-
+const childrens = ref<CommentFormatedWithCommentLikes[]>([])
+const isLoading = ref(false)
+const page = ref(1)
+const limit = ref(3)
+const totalCount = ref(0)
 
 const addComment = () => {
-  loadResponse(props.comment.id, true);
+  loadResponse(props.comment.id, true)
 }
 
 const loadResponse = async (commentId: number, reset: boolean = false) => {
   if (reset) {
-    childrens.value = [];
-    page.value = 1;
+    childrens.value = []
+    page.value = 1
   }
-  isLoading.value = true;
+  isLoading.value = true
   try {
     const response = await commentServices.getChildrenByCommentIdWithPagination(
       commentId,
       page.value,
       limit.value
-    );
-    childrens.value.push(...response.comments);
-    totalCount.value = response.totalCount;
-    page.value++;
+    )
+    childrens.value.push(...response.comments)
+    totalCount.value = response.totalCount
+    page.value++
   } finally {
-    isLoading.value = false;
+    isLoading.value = false
   }
-};
+}
 </script>
 
 <template>
@@ -82,13 +81,12 @@ const loadResponse = async (commentId: number, reset: boolean = false) => {
     <small>Voir les réponses</small>
   </button>
 
-  <div class="max-h-[500px] overflow-y-auto"
-  >
+  <div class="max-h-[500px] overflow-y-auto">
     <div v-if="isLoading">LOADING ...</div>
     <div
       v-else
       v-for="(childComment, index) in childrens"
-      :key="index"
+      :key="childComment.id"
       class="border-l pl-2 dark:border-gray-600 border-gray-200 mb-1.5"
     >
       <UiCommentsRow :post="post" :comment="childComment" :userId="userId" />
