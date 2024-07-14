@@ -5,9 +5,11 @@ import { bookMarkSchema } from "~/schemas/bookmark-schema";
 
 const prisma = new PrismaClient();
 
-
 export default defineEventHandler(async (event) => {
   const session = await getServerSession(event, authOptions);
+
+  const query = getQuery(event);
+  const { page, limit } = query;
 
   if (event.method == "POST") {
     const body = await readBody(event);
@@ -61,23 +63,61 @@ export default defineEventHandler(async (event) => {
 
   if (event.method == "GET") {
     if (!session || !session.user) {
-      return false;
-    }
-    const query = getQuery(event);
-    if (!query.postId) {
       return {
-        statusCode: 400,
-        body: "likedItemId is required",
+        statusCode: 401,
+        body: "Unauthorized",
       };
     }
-    const postId = parseInt(query.postId as string);
-    const existingBookMarked = await prisma.bookmark.findFirst({
+
+    const skip = (Number(page) - 1) * Number(limit);
+    const totalBookmarks = await prisma.bookmark.count({
       where: {
         userId: session.user.id,
-        postId,
       },
     });
 
-    return !!existingBookMarked;
+    const bookmarkedPosts = await prisma.bookmark.findMany({
+      where: {
+        userId: session.user.id,
+      },
+      skip: skip,
+      take: Number(limit),
+      orderBy: {
+        id: "desc",
+      },
+      include: {
+        post: {
+          select: {
+            id: true,
+            title: true,
+            description: true,
+            createdAt: true,
+            mediaPosts: {
+              select: {
+                id: true,
+                url: true,
+              },
+            },
+            user: {
+              select: {
+                id: true,
+                pseudo: true,
+                email: true,
+              },
+            },
+          },
+        },
+      },
+    });
+
+    const totalPages = Math.ceil(totalBookmarks / Number(limit));
+    return {
+      bookmarkedPosts,
+      totalPages,
+      page: Number(page),
+      limit: Number(limit),
+      remainingPages: totalPages - Number(page),
+      remainingPostsBookmarked: totalBookmarks - skip - bookmarkedPosts.length,
+    };
   }
 });

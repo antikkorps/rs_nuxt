@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import GlobalUserGallery from "./GlobalUserGallery.vue"
+import GlobalUserBookmarked from "./GlobalUserBookmarked.vue"
+import GlobalUserLikes from "./GlobalUserLikes.vue"
 
 const selectedTab = ref<number>(0)
 
@@ -22,7 +24,6 @@ const items = [
 ]
 
 function updateSelectedTab(tabLabel: number) {
-  console.log(tabLabel)
   selectedTab.value = tabLabel
 }
 </script>
@@ -38,4 +39,6 @@ function updateSelectedTab(tabLabel: number) {
     </template>
   </UTabs>
   <GlobalUserGallery v-if="selectedTab === 0" />
+  <GlobalUserBookmarked v-else-if="selectedTab === 1" />
+  <GlobalUserLikes v-else-if="selectedTab === 2" />
 </template>
