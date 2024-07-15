@@ -13,98 +13,158 @@ export default defineEventHandler(async (event) => {
     user = session.user;
   }
 
-  const { page = 1, limit = 3 } = query;
+  const { page = 1, limit = 3, me } = query;
 
-  try {
-    const skip = (Number(page) - 1) * Number(limit);
-    const totalPosts = await prisma.post.count();
-    const posts = await prisma.post.findMany({
-      skip: skip,
-      take: Number(limit),
-      orderBy: {
-        createdAt: "desc",
-      },
-      include: {
-        postLikes: user
-          ? {
-              where: {
-                userId: user.id,
-              },
-              select: {
-                id: true,
-              },
-            }
-          : false,
-        _count: {
-          select: {
-            comments: {
-              where: {
-                parentId: null,
-              },
-            },
-            postLikes: true,
-          },
+  if (me) {
+    if (!session || !session.user) {
+      return {
+        statusCode: 401,
+        body: "Unauthorized",
+      };
+    }
+    try {
+      const skip = (Number(page) - 1) * Number(limit);
+      const totalPosts = await prisma.post.count({
+        where: {
+          userId: session.user.id,
         },
-        comments: {
-          take: 3,
-          where: {
-            parentId: null,
-          },
-          orderBy: {
-            createdAt: "desc",
-          },
-          include: {
-            user: {
-              select: {
-                pseudo: true,
-                avatar: true,
-                firstname: true,
-                lastname: true,
-              },
+      });
+      const posts = await prisma.post.findMany({
+        where: {
+          userId: session.user.id,
+        },
+        skip: skip,
+        take: Number(limit),
+        orderBy: {
+          createdAt: "desc",
+        },
+        select: {
+          id: true,
+          title: true,
+          description: true,
+          createdAt: true,
+          mediaPosts: {
+            select: {
+              id: true,
+              url: true,
             },
-            commentLikes: user
-              ? {
-                  where: {
-                    userId: user.id,
-                  },
-                  select: {
-                    id: true,
-                  },
-                }
-              : false,
-            _count: {
-              select: {
-                children: true,
-                commentLikes: true,
-              },
+          },
+          user: {
+            select: {
+              id: true,
+              pseudo: true,
+              email: true,
             },
           },
         },
-        bookmarkedPosts: user
-          ? {
-              where: {
-                userId: user.id,
+      });
+      const totalPages = Math.ceil(totalPosts / Number(limit));
+      return {
+        posts,
+        page: Number(page),
+        limit: Number(limit),
+        totalPages: totalPages,
+        totalPosts: totalPosts,
+        remainingPages: totalPages - Number(page),
+        remainingPosts: totalPosts - skip - posts.length,
+      };
+    } catch (err: unknown) {
+      return {
+        error: err.message,
+      };
+    }
+  } else {
+    try {
+      const skip = (Number(page) - 1) * Number(limit);
+      const totalPosts = await prisma.post.count();
+      const posts = await prisma.post.findMany({
+        skip: skip,
+        take: Number(limit),
+        orderBy: {
+          createdAt: "desc",
+        },
+        include: {
+          postLikes: user
+            ? {
+                where: {
+                  userId: user.id,
+                },
+                select: {
+                  id: true,
+                },
+              }
+            : false,
+          _count: {
+            select: {
+              comments: {
+                where: {
+                  parentId: null,
+                },
               },
-              select: {
-                id: true,
+              postLikes: true,
+            },
+          },
+          comments: {
+            take: 3,
+            where: {
+              parentId: null,
+            },
+            orderBy: {
+              createdAt: "desc",
+            },
+            include: {
+              user: {
+                select: {
+                  pseudo: true,
+                  avatar: true,
+                  firstname: true,
+                  lastname: true,
+                },
               },
-            }
-          : false,
-      },
-    });
-    const totalPages = Math.ceil(totalPosts / Number(limit));
-    return {
-      posts,
-      page: Number(page),
-      limit: Number(limit),
-      totalPages: totalPages,
-      totalPosts: totalPosts,
-      remainingPages: totalPages - Number(page),
-      remainingPosts: totalPosts - skip - posts.length,
-    };
-  } catch (err: unknown) {
-    return {
-      error: err.message,
-    };
+              commentLikes: user
+                ? {
+                    where: {
+                      userId: user.id,
+                    },
+                    select: {
+                      id: true,
+                    },
+                  }
+                : false,
+              _count: {
+                select: {
+                  children: true,
+                  commentLikes: true,
+                },
+              },
+            },
+          },
+          bookmarkedPosts: user
+            ? {
+                where: {
+                  userId: user.id,
+                },
+                select: {
+                  id: true,
+                },
+              }
+            : false,
+        },
+      });
+      const totalPages = Math.ceil(totalPosts / Number(limit));
+      return {
+        posts,
+        page: Number(page),
+        limit: Number(limit),
+        totalPages: totalPages,
+        totalPosts: totalPosts,
+        remainingPages: totalPages - Number(page),
+        remainingPosts: totalPosts - skip - posts.length,
+      };
+    } catch (err: unknown) {
+      return {
+        error: err.message,
+      };
+    }
   }
 });

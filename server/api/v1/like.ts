@@ -106,8 +106,8 @@ export default defineEventHandler(async (event) => {
     }
   }
 
-  const { count, likedItemId, likeType } = query;
-  
+  const { count, likedItemId, likeType, authUser, page, limit } = query;
+
   if (event.method == "GET") {
     if (count) {
       if (!likedItemId) {
@@ -118,14 +118,14 @@ export default defineEventHandler(async (event) => {
       }
 
       let countLikes = 0;
-      if(likeType === LikeType.POST) {
+      if (likeType === LikeType.POST) {
         countLikes = await prisma.postLike.count({
           where: {
             postId: parseInt(likedItemId as string),
           },
         });
       }
-      if(likeType === LikeType.COMMENT) {
+      if (likeType === LikeType.COMMENT) {
         countLikes = await prisma.commentLike.count({
           where: {
             commentId: parseInt(likedItemId as string),
@@ -133,30 +133,63 @@ export default defineEventHandler(async (event) => {
         });
       }
       return countLikes;
-
-    } else {
+    }
+    if (authUser) {
       // get post like for the auth user
       if (!session || !session.user) {
         return false;
       }
 
-      if (!query.likedItemId) {
-        return {
-          statusCode: 400,
-          body: "likedItemId is required",
-        };
-      }
-      const likedItemId = parseInt(query.likedItemId as string);
-      const existingLike = await prisma.postLike.findUnique({
+      const skip = (Number(page) - 1) * Number(limit);
+      const totalLikes = await prisma.postLike.count({
         where: {
-          userId_postId: {
-            userId: session.user.id,
-            postId: likedItemId,
+          userId: session.user.id,
+        },
+      });
+
+      const likedPosts = await prisma.postLike.findMany({
+        where: {
+          userId: session.user.id,
+        },
+        skip: skip,
+        take: Number(limit),
+        orderBy: {
+          id: "desc",
+        },
+        include: {
+          post: {
+            select: {
+              id: true,
+              title: true,
+              description: true,
+              createdAt: true,
+              mediaPosts: {
+                select: {
+                  id: true,
+                  url: true,
+                },
+              },
+              user: {
+                select: {
+                  id: true,
+                  pseudo: true,
+                  email: true,
+                },
+              },
+            },
           },
         },
       });
 
-      return !!existingLike;
+      const totalPages = Math.ceil(totalLikes / Number(limit));
+      return {
+        likedPosts,
+        totalPages,
+        page: Number(page),
+        limit: Number(limit),
+        remainingPages: totalPages - Number(page),
+        remainingPostsLiked: totalLikes - skip - likedPosts.length,
+      };
     }
   }
 });

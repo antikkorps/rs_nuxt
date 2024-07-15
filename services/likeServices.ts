@@ -29,3 +29,13 @@ export const getItemCountLikes = async (likedItemId: number, likeType: string) =
   const data = await response.json()
   return data
 }
+
+export const getLikesByAuthUser = async (page: number = 1, limit: number = 3) => {
+  const response = await fetch(`/api/v1/like?authUser=true&page=${page}&limit=${limit}`);
+  if (!response.ok) {
+    throw new Error("Failed to fetch likes");
+  }
+  const data = await response.json();
+
+  return data;
+}
