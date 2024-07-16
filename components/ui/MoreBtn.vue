@@ -9,34 +9,39 @@ const isOpen = ref(false)
     >
       <Icon name="ic:baseline-more-vert" class="w-6 h-6 dark:text-white text-gray-800" />
     </button>
-    <div
-      v-if="isOpen"
-      class="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50"
-      @click="isOpen = false"
-    ></div>
 
-    <UModal v-model="isOpen">
+    <USlideover v-model="isOpen" side="bottom" prevent-close>
       <UCard
-        :ui="{ ring: '', divide: 'divide-y divide-neutral-100 dark:divide-neutral-700' }"
-        :overlay="{ background: 'bg-neutral-200/75 dark:bg-neutral-800/75' }"
-        class="dark:bg-neutral-800 bg-neutral-100 dark:text-neutral-300 text-neutral-800"
+        class="flex flex-col flex-1 bg-white dark:bg-neutral-900 border border-gray-100 dark:border-gray-800"
+        :ui="{
+          body: { base: 'flex-1' },
+          ring: '',
+          divide: 'divide-y divide-gray-100 dark:divide-gray-800',
+        }"
       >
         <template #header>
-          <div class="w-full flex flex-row justify-end items-center">
-            <UiIcon
-              name="ion:md-close-circle-outline"
+          <div class="flex items-center justify-between px-3">
+            <h3
+              class="text-base font-semibold leading-6 text-gray-900 dark:text-white my-4"
+            >
+              Actions rapides
+            </h3>
+            <UButton
+              color="gray"
+              variant="ghost"
+              icon="i-heroicons-x-mark-20-solid"
+              class="-my-1"
               @click="isOpen = false"
-              size="w-8 h-8"
             />
           </div>
         </template>
 
-        <div class="flex flex-col justify-center p-2 mx-auto w-full">
+        <div class="flex flex-col justify-center p-2 mx-auto">
           <button
             class="flex items-center space-x-2 p-2 hover:bg-gray-100 dark:hover:bg-neutral-600 rounded-lg"
           >
             <Icon name="ic:outline-share" class="w-6 h-6 dark:text-white text-gray-800" />
-            <span>Share</span>
+            <span>Partager</span>
           </button>
           <button
             class="flex items-center space-x-2 p-2 hover:bg-gray-100 dark:hover:bg-neutral-600 rounded-lg"
@@ -45,7 +50,7 @@ const isOpen = ref(false)
               name="ic:outline-bookmark"
               class="w-6 h-6 dark:text-white text-gray-800"
             />
-            <span>Bookmark</span>
+            <span>Sauvegarder</span>
           </button>
           <button
             class="flex items-center space-x-2 p-2 hover:bg-gray-100 dark:hover:bg-neutral-600 rounded-lg"
@@ -54,27 +59,11 @@ const isOpen = ref(false)
               name="ic:outline-report"
               class="w-6 h-6 dark:text-white text-gray-800"
             />
-            <span>Report</span>
+            <span>Signaler</span>
           </button>
         </div>
-        <template #footer>
-          <Placeholder class="h-8" />
-        </template>
       </UCard>
-    </UModal>
+    </USlideover>
   </div>
 </template>
-<style scoped>
-.slide-enter-active,
-.slide-leave-active {
-  transition: all 0.4s ease;
-}
-.slide-enter,
-.slide-leave-to {
-  transform: translateY(100%);
-}
-.slide-enter-to,
-.slide-leave {
-  transform: translateY(0);
-}
-</style>
+<style></style>
