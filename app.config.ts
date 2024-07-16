@@ -18,5 +18,11 @@ export default defineAppConfig({
         },
       },
     },
+    slideover: {
+      background: "bg-white dark:bg-neutral-900",
+      overlay: {
+        background: "bg-white-200/75 dark:bg-neutral-900/75",
+      },
+    },
   },
 })
