@@ -10,13 +10,14 @@ const isOpen = ref(false)
       <Icon name="ic:baseline-more-vert" class="w-6 h-6 dark:text-white text-gray-800" />
     </button>
 
-    <USlideover v-model="isOpen" side="bottom" prevent-close>
+    <USlideover v-model="isOpen" side="bottom">
       <UCard
-        class="flex flex-col flex-1 bg-white dark:bg-neutral-900 border border-gray-100 dark:border-gray-800"
+        class="flex flex-col flex-1 border-gray-100 dark:border-gray-800"
         :ui="{
           body: { base: 'flex-1' },
           ring: '',
           divide: 'divide-y divide-gray-100 dark:divide-gray-800',
+          background: 'bg-white dark:bg-neutral-950',
         }"
       >
         <template #header>
