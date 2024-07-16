@@ -2,7 +2,6 @@
 const title = ref("");
 const content = ref("");
 
-//gérer les erreurs pour afficher les messages d'erreurs
 const submitForm = () => {
     if (!title.value || !content.value) {
         alert("Vous devez remplir tous les champs");
