@@ -4,12 +4,21 @@ const title = ref("")
 const content = ref("")
 
 const { session, cookies } = useAuth()
+const router = useRouter()
 
 const userId = session.value?.user?.id
 
 const submitForm = () => {
+  if (!session) {
+    console.log("Vous devez être connecté pour créer un post")
+    router.push("/auth/login")
+  }
   if (!title.value || !content.value) {
     alert("Vous devez remplir tous les champs")
+    return
+  }
+  if (typeof userId === "undefined") {
+    console.log("L'ID de l'utilisateur est indéfini")
     return
   }
   try {
@@ -47,7 +56,7 @@ const submitForm = () => {
         label="Contenu"
         description="Entrez la description de votre post"
         required
-        :error="!content && 'Vous devez entrer une description à votre post'"
+        :error="!content && 'Vous devez entrer une description'"
       >
         <UInput type="text" v-model="content" placeholder="Content" />
       </UFormGroup>
