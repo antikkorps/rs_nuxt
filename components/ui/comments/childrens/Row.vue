@@ -39,11 +39,14 @@ const addComment = () => {
   loadResponse(props.comment.id, true)
 }
 
+const scrollContainerRef = ref(null)
+
 const loadResponse = async (commentId: number, reset: boolean = false) => {
   if (reset) {
     childrens.value = []
     page.value = 1
   }
+
   isLoading.value = true
   try {
     const response = await commentServices.getChildrenByCommentIdWithPagination(
@@ -81,7 +84,7 @@ const loadResponse = async (commentId: number, reset: boolean = false) => {
     <small>Voir les réponses</small>
   </button>
 
-  <div class="max-h-[500px] overflow-y-auto">
+  <div ref="scrollContainerRef" class="comments-container">
     <div v-if="isLoading">LOADING ...</div>
     <div
       v-else
@@ -102,10 +105,3 @@ const loadResponse = async (commentId: number, reset: boolean = false) => {
     </button>
   </div>
 </template>
-
-<style>
-.comment-container {
-  max-height: 500px;
-  overflow-y: auto;
-}
-</style>
