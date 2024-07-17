@@ -1,33 +1,32 @@
 <script setup lang="ts">
-import type { ExtendedPost } from "~/types/posts";
-import { likeServices } from "@/services";
+import type { ExtendedPost } from "~/types/posts"
+import { likeServices } from "@/services"
 
 const props = defineProps({
   post: {
     type: Object as PropType<ExtendedPost>,
     required: true,
   },
-});
+})
 
-const { session } = useAuth();
+const { session } = useAuth()
 
-const user = session.value?.user;
+const user = session.value?.user
 
 const updateLikes = async () => {
-  fetchPostLikes();
-};
+  fetchPostLikes()
+}
 
-const likeCount = ref(null);
-const loadingCount = ref(false);
+const likeCount = ref(null)
+const loadingCount = ref(false)
 const fetchPostLikes = async () => {
-  loadingCount.value = true;
-  likeCount.value = await likeServices.getItemCountLikes(props.post.id, "POST");
-  loadingCount.value = false;
-};
+  loadingCount.value = true
+  likeCount.value = await likeServices.getItemCountLikes(props.post.id, "POST")
+  loadingCount.value = false
+}
 onMounted(() => {
-  likeCount.value = props.post._count.postLikes || 0;
-});
-
+  likeCount.value = props.post._count.postLikes || 0
+})
 </script>
 <template>
   <div class="flex pb-6 items-center justify-between">
@@ -40,23 +39,16 @@ onMounted(() => {
       </a>
       <div class="flex flex-col">
         <div class="flex items-center">
-          <a class="inline-block text-lg font-bold mr-2" href="#"
-            >Esther Howard</a
-          >
+          <a class="inline-block text-lg font-bold mr-2" href="#">Esther Howard</a>
           <span>
-            <svg
-              class="fill-blue-500 dark:fill-neutral-50 w-5 h-5"
-              viewBox="0 0 24 24"
-            >
+            <svg class="fill-blue-500 dark:fill-neutral-50 w-5 h-5" viewBox="0 0 24 24">
               <path
                 d="M10,17L5,12L6.41,10.58L10,14.17L17.59,6.58L19,8M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z"
               ></path>
             </svg>
           </span>
         </div>
-        <div class="text-neutral-500 dark:text-neutral-300">
-          January 22, 2021
-        </div>
+        <div class="text-neutral-500 dark:text-neutral-300">January 22, 2021</div>
       </div>
     </div>
     <UiMoreBtn />
@@ -101,17 +93,20 @@ onMounted(() => {
     </div>
   </div>
   <div class="mb-4">
-    <div  v-if="loadingCount" class="dark:bg-neutral-600 bg-gray-200  animate-pulse animate w-28 rounded h-5" />
+    <div
+      v-if="loadingCount"
+      class="dark:bg-neutral-600 bg-gray-200 animate-pulse animate w-28 rounded h-5"
+    />
     <div v-else>
       <span v-if="likeCount === 0" class="text-lg font-bold">
-      Ce post n'a pas encore été liké
-    </span>
-    <span v-else-if="likeCount === 1" class="text-lg font-bold">
-      1 personne aime ce post
-    </span>
-    <span v-else class="text-lg font-bold">
-      {{ likeCount }} personnes aiment ce post
-    </span>
+        Ce post n'a pas encore été liké
+      </span>
+      <span v-else-if="likeCount === 1" class="text-lg font-bold">
+        1 personne aime ce post
+      </span>
+      <span v-else class="text-lg font-bold">
+        {{ likeCount }} personnes aiment ce post
+      </span>
     </div>
   </div>
 </template>
