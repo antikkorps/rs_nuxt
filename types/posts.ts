@@ -1,35 +1,42 @@
-import type { MediaPost, Post, User } from "@prisma/client";
-import type { CommentFormatedWithCommentLikes } from "./types";
+import type { MediaPost, Post, User } from "@prisma/client"
+import type { CommentFormatedWithCommentLikes } from "./types"
 
 export interface ExtendedPost extends Post {
-  comments: CommentFormatedWithCommentLikes[];
-  bookmarkedPosts?: { id: number }[];
-  postLikes?: { id: number }[];
+  comments: CommentFormatedWithCommentLikes[]
+  bookmarkedPosts?: { id: number }[]
+  postLikes?: { id: number }[]
   _count: {
-    comments: number;
-    postLikes: number;
-  };
+    comments: number
+    postLikes: number
+  }
+}
+
+export interface PostBody {
+  title: string
+  description: string
+  userId: string
+  mediaPosts?: Partial<MediaPost[]>
 }
 
 export interface BookmarkedAndLikedPost {
-  id: number;
+  id: number
   post: {
-    title?: string;
-    createdAt: string;
-    description?: string;
-    id: number;
-    mediaPosts?: Partial<MediaPost[]>;
-    user: Partial<User>;
-  },
-  postId: number;
-  userId: string;
+    title?: string
+    createdAt: string
+    description?: string
+    id: number
+    mediaPosts?: Partial<MediaPost[]>
+    user: Partial<User>
+  }
+  postId: number
+  userId: string
 }
 
 export interface UserGalleryPost {
-    title?: string;
-    createdAt: string;
-    description?: string;
-    id: number;
-    mediaPosts?: Partial<MediaPost[]>;
-    user: Partial<User>;
+  title?: string
+  createdAt: string
+  description?: string
+  id: number
+  mediaPosts?: Partial<MediaPost[]>
+  user: Partial<User>
 }
