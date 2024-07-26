@@ -369,6 +369,7 @@ model Salon {
   logo        String?
   street      String
   zipcode     String
+  city        String
   country     String
   userId      String
   user        User    @relation("userToSalons", fields: [userId], references: [id])
