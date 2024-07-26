@@ -33,6 +33,7 @@ const links = [
       <div class="text-center text-2xl font-extrabold">Ink4U</div>
       <div><UiColorMode /></div>
 
+      <UiUpsertSalon />
       <ul class="flex flex-col justify-around">
         <li v-for="link in links" :key="link.name" class="flex items-center text-lg my-4">
           <nuxt-link :to="link.href">
