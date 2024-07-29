@@ -106,6 +106,19 @@ async function main() {
       },
     })
   }
+  await prisma.salon.create({
+    data: {
+      userId: testUser.id,
+      name: faker.lorem.sentence(),
+      description: faker.lorem.paragraphs(),
+      slug: faker.lorem.slug(),
+      street: faker.address.streetName(),
+      city: faker.address.city(),
+      zipcode: faker.address.zipCode(),
+      country: faker.address.country(),
+    }
+  })
+
   const postWithComment = await prisma.post.create({
     data: {
       userId: testUser.id,

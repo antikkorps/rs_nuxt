@@ -4,12 +4,12 @@ import { authOptions } from "../auth/[...]";
 import { isUserSalonOwner } from "~/services/salonServices";
 import { SalonSchema } from "~/schemas/salon-schema";
 import { z } from "zod";
-
+import { slugServices } from "@/services";
 const prisma = new PrismaClient();
 
 export default defineEventHandler(async (event) => {
   const query = getQuery(event);
-
+   
   const session = await getServerSession(event, authOptions);
 
   if (event.method == "GET") {
@@ -40,18 +40,26 @@ export default defineEventHandler(async (event) => {
       }
     }
 
+    const slug = await slugServices.generateUniqueSlug(
+        validateData.data.name,
+        "salon"
+    );
+    console.log(slug);
     const salon = await prisma.salon.upsert({
       where: { id: validateData.data.id ?? 0 },
       create: {
         ...validateData.data,
+        slug,
         userId: user.id,
       },
       update: {
         ...validateData.data,
+        slug,
         userId: user.id,
       },
     });
 
+    console.log(salon);
     return salon;
   }
 

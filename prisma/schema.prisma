@@ -54,9 +54,9 @@ model User {
   messages_received InstantMessage[] @relation("ReceiverMessages")
   pinned_post       PinnedPost[]     @relation("userPinnedPost")
 
-  confirmedAt DateTime?
-  postLikes         PostLike[]       @relation("userPostLikes")
-  commentLikes      CommentLike[]    @relation("userCommentLikes")
+  confirmedAt  DateTime?
+  postLikes    PostLike[]    @relation("userPostLikes")
+  commentLikes CommentLike[] @relation("userCommentLikes")
 
   @@index(fields: [firstname, lastname, email], name: "main_user_index")
   @@map("users")
@@ -77,13 +77,12 @@ model Post {
   // Maybe we can delete mediaPost
   mediaPosts MediaPost[] @relation("mediaPost")
 
-
   comments        Comment[]    @relation("postComments")
   // userSavedPosts SavedPost[]  @relation("userSavedPosts")
   bookmarkedPosts Bookmark[]   @relation("userBookmarks")
   pinnedPosts     PinnedPost[] @relation("pinnedPost")
 
-  postLikes       PostLike[]   @relation("postLikes")
+  postLikes PostLike[] @relation("postLikes")
 
   // Add for the post Content by Karl 12/01
   postTypeChoice PostTypeChoice[] @relation("postType")
@@ -93,7 +92,6 @@ model Post {
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   deletedAt DateTime?
-
 
   @@index([userId, id], name: "main_post_index")
   @@map("posts")
@@ -233,6 +231,7 @@ model Comment {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
   @@map("comments")
 }
 
@@ -258,7 +257,6 @@ model Tag {
 }
 
 // Polymorphic like
-
 
 enum LikeType {
   POST
@@ -365,6 +363,7 @@ model Subscription {
 model Salon {
   id          Int     @id @default(autoincrement())
   name        String
+  slug        String  @unique
   description String?
   logo        String?
   street      String
