@@ -366,6 +366,7 @@ model Salon {
   id          Int     @id @default(autoincrement())
   name        String
   description String?
+  slug        String @unique
   logo        String?
   street      String
   zipcode     String

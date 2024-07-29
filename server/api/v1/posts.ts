@@ -51,10 +51,23 @@ export default defineEventHandler(async (event) => {
           },
           user: {
             select: {
-              id: true,
               pseudo: true,
-              email: true,
               avatar: true,
+              firstname: true,
+              lastname: true,
+              email: true,
+              salons: {
+                select: {
+                  id: true,
+                  name: true,
+                  slug: true,
+                  street: true,
+                  city: true,
+                  zipcode: true,
+                  country: true,
+                },
+                
+              }
             },
           },
         },
@@ -85,6 +98,27 @@ export default defineEventHandler(async (event) => {
           createdAt: "desc",
         },
         include: {
+          user: {
+            select: {
+              pseudo: true,
+              avatar: true,
+              firstname: true,
+              lastname: true,
+              email: true,
+              salons: {
+                select: {
+                  id: true,
+                  name: true,
+                  slug: true,
+                  street: true,
+                  city: true,
+                  zipcode: true,
+                  country: true,
+                },
+                
+              }
+            },
+          },
           postLikes: user
             ? {
                 where: {
