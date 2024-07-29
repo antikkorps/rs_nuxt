@@ -19,7 +19,7 @@ const props = defineProps({
     default: "index",
   }
 });
-
+console.log(props.post);
 </script>
 
 <template>

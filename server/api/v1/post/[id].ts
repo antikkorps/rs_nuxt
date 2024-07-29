@@ -24,6 +24,27 @@ export default defineEventHandler(async (event) => {
         id: Number(id),
       },
       include: {
+        user: {
+          select: {
+            id: true,
+            pseudo: true,
+            avatar: true,
+            firstname: true,
+            lastname: true,
+            salons: {
+              select: {
+                id: true,
+                name: true,
+                slug: true,
+                logo: true,
+                street: true,
+                city: true,
+                zipcode: true,
+                country: true,
+              },
+            },
+          },
+        },
         _count: {
           select: {
             comments: {
@@ -50,6 +71,7 @@ export default defineEventHandler(async (event) => {
                 firstname: true,
                 lastname: true,
               },
+             
             },
             commentLikes: user
               ? {
