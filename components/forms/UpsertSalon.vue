@@ -153,7 +153,7 @@ const props = defineProps({
 const toast = useToast();
 
 const state = reactive({
-  id: "",
+  id: undefined as number | null,
   name: "",
   description: "",
   street: "",
