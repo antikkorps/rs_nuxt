@@ -4,19 +4,24 @@ import { resolve } from "node:path"
 export default defineNuxtConfig({
   devtools: { enabled: true },
   modules: ["@nuxt/ui", "@pinia/nuxt", "@hebilicious/authjs-nuxt", "@nuxt/image"],
+
   colorMode: {
     preference: "dark",
   },
+
   tailwindcss: {
     cssPath: "~/assets/css/tailwind.css",
     configPath: "~/tailwind.config.js",
     config: {},
     viewer: true,
   },
+
   extends: ["nuxt-emoji"],
+
   alias: {
     cookie: resolve(__dirname, "node_modules/cookie"),
   },
+
   runtimeConfig: {
     authJs: {
       secret: process.env.NUXT_NEXTAUTH_SECRET, // You can generate one with `openssl rand -base64 32`
@@ -32,4 +37,6 @@ export default defineNuxtConfig({
       },
     },
   },
+
+  compatibilityDate: "2024-08-09",
 })
