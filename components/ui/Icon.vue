@@ -15,6 +15,6 @@ const sizeClass = computed(() => props.size.split(" "))
 <template>
   <Icon
     :name="props.name"
-    :class="[sizeClass, 'mr-3 dark:text-white text-neutral-700']"
+    :class="[...sizeClass, 'mr-3 dark:text-white text-neutral-700']"
   />
 </template>
