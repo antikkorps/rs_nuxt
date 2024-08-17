@@ -51,24 +51,21 @@ const onClickButton = async ({
   }
 }
 
-
 async function fetchUpdatedLikes() {
-  loadingCount.value = true;
+  loadingCount.value = true
   fetchPostLikes()
-  loadingCount.value = false;
+  loadingCount.value = false
 }
 
-const likeCount = ref(null);
-const loadingCount = ref(false);
+const likeCount = ref<number | null>(null)
+const loadingCount = ref(false)
 const fetchPostLikes = async () => {
-  likeCount.value = await likeServices.getItemCountLikes(props.comment.id, "COMMENT");
-};
+  likeCount.value = await likeServices.getItemCountLikes(props.comment.id, "COMMENT")
+}
 onMounted(() => {
-  likeCount.value = props.comment._count.commentLikes ?? 0;
-});
-
+  likeCount.value = props.comment._count.commentLikes ?? 0
+})
 </script>
-
 
 <template>
   <div class="">
@@ -83,7 +80,10 @@ onMounted(() => {
         />
 
         <span class="text-base font-bold" v-if="!loadingCount">{{ likeCount }}</span>
-        <div class="dark:bg-neutral-600 bg-gray-200 animate-pulse w-3 h-5 rounded" v-else />
+        <div
+          class="dark:bg-neutral-600 bg-gray-200 animate-pulse w-3 h-5 rounded"
+          v-else
+        />
       </div>
       <UiEmojiPicker />
       <div class="flex items-center">
