@@ -8,8 +8,13 @@ const postStore = usePostStore()
 const post = ref() as unknown as Ref<ExtendedPost | null>
 const comments = ref([]) as Ref<CommentFormatedWithCommentLikes[] | undefined>
 
+const getPostId = (): number => {
+  const id = route.params.id
+  return Array.isArray(id) ? parseInt(id[0]) : parseInt(id)
+}
+
 const refreshPost = async () => {
-  const postId = parseInt(route.params.id)
+  const postId = getPostId()
   const response = await postServices.getPostById(postId)
   post.value = response
 
@@ -40,7 +45,6 @@ watch(
     }
   }
 )
-
 </script>
 
 <template>
