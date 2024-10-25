@@ -60,7 +60,7 @@ const moreCommentBtn = props.type === "index" ? `/posts/${props.post.id}` : "";
       v-else
     />
     <!-- More comments -->
-    <div class="w-full">
+    <div class="w-full" v-if="comments && comments.length > 0">
       <nuxt-link
         class="py-3 px-4 w-full block bg-neutral-100 dark:bg-neutral-700 text-center rounded-lg font-medium hover:bg-neutral-200 dark:hover:bg-neutral-600 transition ease-in-out delay-75"
         :to="moreCommentBtn"

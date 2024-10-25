@@ -71,29 +71,29 @@ export default defineEventHandler(async (event) => {
             },
           },
         },
-        include: {
-          user: {
-            select: {
-              id: true,
-              pseudo: true,
-              avatar: true,
-              firstname: true,
-              lastname: true,
-              salons: {
-                select: {
-                  id: true,
-                  name: true,
-                  slug: true,
-                  logo: true,
-                  street: true,
-                  city: true,
-                  zipcode: true,
-                  country: true,
-                },
-              },
-            },
-          },
-        },
+        // include: {
+        //   user: {
+        //     select: {
+        //       id: true,
+        //       pseudo: true,
+        //       avatar: true,
+        //       firstname: true,
+        //       lastname: true,
+        //       salons: {
+        //         select: {
+        //           id: true,
+        //           name: true,
+        //           slug: true,
+        //           logo: true,
+        //           street: true,
+        //           city: true,
+        //           zipcode: true,
+        //           country: true,
+        //         },
+        //       },
+        //     },
+        //   },
+        // },
       });
       const totalPages = Math.ceil(totalPosts / Number(limit));
       return {
