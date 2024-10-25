@@ -9,16 +9,19 @@ const items = [
   {
     label: "Galerie",
     icon: "solar:gallery-wide-outline",
+    size: "w-8 h-8",
     content: "Galerie de l'utilisateur",
   },
   {
     label: "Bookmarks",
     icon: "solar:bookmark-outline",
+    size: "w-8 h-8",
     content: "This is the user's bookmarks view",
   },
   {
     label: "Favorites",
     icon: "solar:gallery-favourite-outline",
+    size: "w-8 h-8",
     content: "This is the favorite view",
   },
 ]
@@ -32,7 +35,7 @@ function updateSelectedTab(tabLabel: number) {
   <UTabs :items="items" class="w-full" @change="updateSelectedTab">
     <template #default="{ item, selected }">
       <div class="flex items-center gap-2 relative truncate">
-        <UiIcon :name="item.icon" class="w-8 h-8 flex-shrink-0" />
+        <UiIcon :name="item.icon" :size="item.size" class="flex-shrink-0" />
 
         <!-- <span class="truncate">{{ item.content }}</span> -->
       </div>

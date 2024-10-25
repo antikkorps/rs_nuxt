@@ -39,12 +39,7 @@ export default defineEventHandler(async (event) => {
         };
       }
     }
-
-    const slug = await slugServices.generateUniqueSlug(
-        validateData.data.name,
-        "salon"
-    );
-    console.log(slug);
+    const slug = await slugServices.generateUniqueSlug(validateData.data.name, "salon");
     const salon = await prisma.salon.upsert({
       where: { id: validateData.data.id ?? 0 },
       create: {

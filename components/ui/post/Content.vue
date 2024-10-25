@@ -17,7 +17,7 @@ const updateLikes = async () => {
   fetchPostLikes()
 }
 
-const likeCount = ref(null)
+const likeCount = ref(0)
 const loadingCount = ref(false)
 const fetchPostLikes = async () => {
   loadingCount.value = true

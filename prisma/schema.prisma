@@ -34,6 +34,7 @@ model User {
   updatedAt        DateTime           @updatedAt
   avatar           String?
   birth            DateTime?
+  isTattooArtist   Boolean            @default(false)
   sex              Sex?
   subscriptions    SubscriptionUser[]
   salons           Salon[]            @relation("userToSalons")
@@ -365,6 +366,7 @@ model Salon {
   name        String
   slug        String  @unique
   description String?
+  slug        String @unique
   logo        String?
   street      String
   zipcode     String
