@@ -3,6 +3,8 @@
 <script setup lang="ts">
 
 const route = useRoute()
-const salonId = parseInt(route.params.id)
+const salonId = Array.isArray(route.params.id) 
+  ? parseInt(route.params.id[0], 10) 
+  : parseInt(route.params.id, 10);
 
 </script>

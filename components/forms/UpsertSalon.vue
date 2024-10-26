@@ -140,12 +140,15 @@
 </template>
 
 <script setup lang="ts">
-import { SalonSchema } from "~/schemas/salon-schema";
+import { SalonSchema, type SalonType } from "~/schemas/salon-schema";
 import { salonServices } from "@/services";
+import type { z } from "zod";
+
+
 
 const props = defineProps({
   salon: {
-    type: Object as PropType<SalonSchema>,
+    type: Object as PropType<SalonType>,
     required: false,
   },
 });
@@ -153,7 +156,7 @@ const props = defineProps({
 const toast = useToast();
 
 const state = reactive({
-  id: undefined as number | null,
+  id: undefined as unknown as number | null,
   name: "",
   description: "",
   street: "",
@@ -163,7 +166,6 @@ const state = reactive({
 });
 
 onMounted(() => {
-
   if (props.salon) {
     state.id = props.salon.id ?? null;
     state.name = props.salon.name ?? '';

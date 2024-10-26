@@ -2,10 +2,12 @@
   <div>
     <label
       class="capitalize block text-sm font-medium leading-6"
-      >{{ label }}</label>
+      >{{ label }} {{ required ? "*" : "" }}</label>
     <div class="mt-2 space-y-2">
-      <slot name="input" />
-
+      <div>
+        <slot name="input" />
+        <p class="text-sm text-gray-500">{{ description }}</p>
+      </div>
       <small :v-if="error" class="text-red-700">{{ error }}</small>
     </div>
   </div>
@@ -25,6 +27,16 @@ const props = defineProps({
     type: String,
     required: false,
     default: undefined,
+  },
+  description: {
+    type: String,
+    required: false,
+    default: undefined,
+  },
+  required: {
+    type: Boolean,
+    required: false,
+    default: false,
   },
 });
 </script>

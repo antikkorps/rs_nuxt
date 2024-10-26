@@ -1,7 +1,7 @@
 import { PrismaClient } from "@prisma/client"
-import type { PostBody } from "~/types/posts"
 import { getServerSession } from "#auth"
 import { authOptions } from "../auth/[...]"
+import { PostTypeZod } from "~/schemas/post-schema"
 
 const prisma = new PrismaClient()
 
@@ -16,7 +16,8 @@ export default defineEventHandler(async (event) => {
     }
 
     if (event.method === "POST") {
-      const body: PostBody = await readBody(event)
+      const body: PostTypeZod = await readBody(event)
+      
       if (!body.title || !body.description) {
         return {
           statusCode: 400,
@@ -29,6 +30,7 @@ export default defineEventHandler(async (event) => {
           title: body.title,
           description: body.description,
           userId: session.user.id,
+          user_status: body.user_status
         },
       })
 

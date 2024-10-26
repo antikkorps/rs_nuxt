@@ -1,4 +1,5 @@
 import type { ExtendedPost, PostBody } from "~/types/posts"
+import type { PostTypeZod } from "~/schemas/post-schema"
 
 export const getAllPosts = async (page: number = 1, limit: number = 3) => {
   const response = await fetch(`/api/v1/posts?page=${page}&limit=${limit}`)
@@ -27,7 +28,7 @@ export const getMyPosts = async (page: number = 1, limit: number = 3) => {
   return data
 }
 
-export const createPost = async (post: PostBody) => {
+export const createPost = async (post: PostTypeZod) => {
   const response = await fetch(`/api/v1/posts`, {
     method: "POST",
     headers: {
