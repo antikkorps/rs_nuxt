@@ -9,7 +9,7 @@ const prisma = new PrismaClient();
 
 export default defineEventHandler(async (event) => {
   const query = getQuery(event);
-
+   
   const session = await getServerSession(event, authOptions);
 
   if (event.method == "GET") {
@@ -54,6 +54,7 @@ export default defineEventHandler(async (event) => {
       },
     });
 
+    console.log(salon);
     return salon;
   }
 
