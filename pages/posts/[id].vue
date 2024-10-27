@@ -28,7 +28,9 @@ const refreshPost = async () => {
 //   comments.value = commentResponse
 // }
 onMounted(async () => {
-  const postId = parseInt(route.params.id[0])
+  const postId = Array.isArray(route.params.id) 
+    ? parseInt(route.params.id[0]) 
+    : parseInt(route.params.id)
   const response = await postServices.getPostById(postId)
   post.value = response
   await refreshPost()

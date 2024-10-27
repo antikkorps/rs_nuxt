@@ -129,8 +129,8 @@
                 type="button"
                 class="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
               >
-                {{ loading ? "Chargement..." : "Ajouter le salon" }}
-              </button>
+                {{ loading ? "Chargement..." : buttonLabel }}
+            </button>
             </div>
           </form>
         </div>
@@ -196,7 +196,7 @@ const resetErrors = () => {
 };
 const onSubmit = async () => {
   resetErrors();
-  loading.value = true;
+
   const validateData = SalonSchema.safeParse(state);
   if (!validateData.success) {
     validateData.error.errors.forEach((error: z.ZodIssue) => {
@@ -215,8 +215,8 @@ const onSubmit = async () => {
     return;
   }
   try {
+    loading.value = true;
     const salon = await salonServices.upsertSalon(state);
-
     toast.add({
       title: "Salon ajouté avec succès",
       icon: "i-heroicons-information-circle",
@@ -230,5 +230,7 @@ const onSubmit = async () => {
     loading.value = false;
   }
 };
+
+const buttonLabel = props.salon?.id ? "Mettre à jour le salon" : "Ajouter le salon";
 </script>
 
