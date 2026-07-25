@@ -11,7 +11,7 @@
     "seed": "node prisma/seeders/seeds.js"
   },
   "dependencies": {
-    "@auth/core": "^0.17.0",
+    "@auth/core": "^0.41.3",
     "@auth/prisma-adapter": "^2.1.0",
     "@mimachh/multi-select": "^0.9.7",
     "@nuxt/image": "^1.7.0",
