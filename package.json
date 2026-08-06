@@ -15,7 +15,7 @@
     "@auth/prisma-adapter": "^2.1.0",
     "@mimachh/multi-select": "^0.9.7",
     "@nuxt/image": "^1.7.0",
-    "@nuxt/ui": "^2.15.2",
+    "@nuxt/ui": "^4.8.1",
     "@pinia/nuxt": "^0.5.1",
     "@prisma/client": "^5.19.0",
     "@types/bcrypt": "^5.0.2",
